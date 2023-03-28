@@ -1,5 +1,4 @@
-const fs = require('fs').promises;
-
+import fs  from 'fs';
 
 class ProductManager {
     #products = []
@@ -11,9 +10,9 @@ class ProductManager {
         this.path = `./Productos.json`;
     }
 
-    async getProducts() {
+     async getProducts() {
         try {
-            let productsFile = await fs.readFile(this.path, "utf-8")
+            let productsFile = await fs.promises.readFile(this.path, "utf-8")
             return JSON.parse(productsFile)
         } catch (e) {
             await fs.writeFile(this.path, "[]")
@@ -25,7 +24,7 @@ class ProductManager {
         try {
             const { title, description, price, image, code, stock } = product;
 
-            const productsFile = await fs.readFile(this.path, "utf-8")
+            const productsFile = await fs.promises.readFile(this.path, "utf-8")
 
             let newProducts = JSON.parse(productsFile)
 
@@ -50,7 +49,7 @@ class ProductManager {
                 })
             }
 
-            await fs.writeFile(this.path, JSON.stringify(newProducts, null, 2))
+            await fs.promises.writeFile(this.path, JSON.stringify(newProducts, null, 2))
             return "Producto agregado";
         } catch (e) {
             throw new Error(e)
@@ -59,7 +58,7 @@ class ProductManager {
 
     async getProductById(id) {
         try {
-            let productsFile = await fs.readFile(this.path, "utf-8")
+            let productsFile = await fs.promises.readFile(this.path, "utf-8")
             let idProduct = JSON.parse(productsFile);
 
             const searchProduct = idProduct.find((p) => p.id === id);
@@ -75,7 +74,7 @@ class ProductManager {
 
     async updateProduct(id, product) {
         try {
-            let productsFile = await fs.readFile(this.path, "utf-8")
+            let productsFile = await fs.promises.readFile(this.path, "utf-8")
             let products = JSON.parse(productsFile);
 
             let idProduct = products.findIndex((p) => p.id === id);
@@ -94,7 +93,7 @@ class ProductManager {
 
     async deleteProduct(id) {
         try {
-            let productsFile = await fs.readFile(this.path, "utf-8")
+            let productsFile = await fs.promises.readFile(this.path, "utf-8")
             let products = JSON.parse(productsFile);
 
             const idProduct = products.find((p) => p.id === id);
@@ -104,7 +103,7 @@ class ProductManager {
 
             let productDelete = products.filter((p) => p.id !== id);
 
-            await fs.writeFile(this.path, JSON.stringify(productDelete, null, 2))
+            await fs.promises.writeFile(this.path, JSON.stringify(productDelete, null, 2))
 
             return "Producto eliminado Id: " + id
 
@@ -156,3 +155,4 @@ const main = async () => {
 
 //main();
 
+export default ProductManager;
