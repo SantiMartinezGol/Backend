@@ -1,4 +1,4 @@
-import fs  from 'fs';
+import fs from 'fs';
 
 class ProductManager {
     #products = []
@@ -15,7 +15,7 @@ class ProductManager {
             let productsFile = await fs.promises.readFile(this.path, "utf-8")
             return JSON.parse(productsFile)
         } catch (e) {
-            await fs.writeFile(this.path, "[]")
+            await fs.promises.writeFile(this.path, "[]")
             return ("El archivo no contiene producto")
         }
     }
@@ -62,10 +62,9 @@ class ProductManager {
             let idProduct = JSON.parse(productsFile);
 
             const searchProduct = idProduct.find((p) => p.id === id);
-
-            if (!searchProduct) {
+           /*  if (!searchProduct) {
                 throw new Error("NotFound");
-            }
+            }   */
             return searchProduct;
         } catch (e) {
             throw new Error(e)
@@ -81,7 +80,7 @@ class ProductManager {
 
             products.splice(idProduct, 1, { id, ...product });
 
-            await fs.writeFile(this.path, JSON.stringify(products, null, 2))
+            await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
 
             return "Producto modificado!"
 
