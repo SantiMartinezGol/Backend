@@ -8,16 +8,15 @@ app.use(express.urlencoded({extended : true}));
 
 app.get ('/products', async(req, res)=>{
     const limit = req.query;
-    const products = await productos.getProducts()
-    const fiveProducts = products.slice(0, 4)
+    const number = parseInt(limit.limit);
+    const products = await productos.getProducts() 
 
-    res.send(fiveProducts);
+    if (isNaN(number)){
+        res.send(products)   
+    }else{
+        const filterProducts = products.slice(0, number)
+        res.send(filterProducts);}
 });
-
-app.get ('/products', async (req, res)=>{
-    const products = await productos.getProducts() ; 
-    res.send(products)
-}); 
 
 app.get ('/products/:pid', async (req, res)=>{
     const pid = req.params.pid;
@@ -28,7 +27,6 @@ app.get ('/products/:pid', async (req, res)=>{
  
     res.send (product)
 });
-
 
 app.listen(8083, () => {
 console.log('El servidor escucha el puerto 8083');
