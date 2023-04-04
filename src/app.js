@@ -1,6 +1,5 @@
 import express from 'express'
-import ProductManager  from '../ProductManager.js';
-
+import ProductManager  from './ProductManager.js';
 const app = express()
 const productos = new ProductManager();
 
@@ -28,6 +27,6 @@ app.get ('/products/:pid', async (req, res)=>{
     res.send (product)
 });
 
-app.listen(8083, () => {
-console.log('El servidor escucha el puerto 8083');
+app.listen(8082, () => {
+console.log('El servidor escucha el puerto 8082');
 });
