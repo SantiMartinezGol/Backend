@@ -22,7 +22,6 @@ class ProductManager {
     }
 
     async addProduct(product) {
-        /*  try { */
         const { title, description, price, code, status, stock, category } = product;
         const productsFile = await fs.promises.readFile(this.path, "utf-8")
         let newProducts = JSON.parse(productsFile)
@@ -59,7 +58,6 @@ class ProductManager {
         try {
             let productsFile = await fs.promises.readFile(this.path, "utf-8")
             let idProduct = JSON.parse(productsFile);
-
             const searchProduct = idProduct.find((p) => p.id === id);
             return searchProduct;
         } catch (e) {
@@ -89,7 +87,6 @@ class ProductManager {
             let a = { code: 400, message: "Producto no encontrado", status: "Error" };
             return a
         }
-
     }
 
     async deleteProduct(id) {
@@ -101,15 +98,12 @@ class ProductManager {
             if (!idProduct) {
                 let a = { code: 400, message: "Producto no encontrado", status: "Error" };
                 return a
-
             }
-            let productDelete = products.filter((p) => p.id !== idNumber);
 
+            let productDelete = products.filter((p) => p.id !== idNumber);
             await fs.promises.writeFile(this.path, JSON.stringify(productDelete, null, 2))
             let a = { code: 200, message: " Producto eliminado Id: " + idNumber, status: "Exito" };
             return a
-
-
         } catch (e) {
             throw new Error(e)
         }

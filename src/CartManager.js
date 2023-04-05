@@ -32,27 +32,21 @@ class CartManager {
     }
 
     async addToCart(cid, pid, pqty) {
-       
-        try {
-          
+        try {          
             if (!cid) {
                 let cartFile = await fs.promises.readFile(this.path, "utf-8")
                 let newCart = JSON.parse(cartFile)
-                console.log(newCart);
                 this.lastId = Math.max(...newCart.map(c => c.cid)) + 1;
                 let prod = []
-                cid=  this.lastId +1
-               // } else { 
-                //    let prod = { "pid": pid, "pqty": pqty }
-                }
+                cid=  this.lastId
                 newCart.push({
-                    "cid": cid,
+                   "cid": cid,
                     "producto": prod
                 })
-                console.log(newCart);
                 await fs.promises.writeFile(this.path, JSON.stringify(newCart, null, 2));
                 return
-           /* }  else {
+            }  else {
+                let prod = { "pid": pid, "pqty": pqty }
                 let cartFile = await fs.promises.readFile(this.path, "utf-8")
                 let newCart = JSON.parse(cartFile)
                 const pedido = newCart.find(elemento => elemento.cid === cid);
@@ -62,7 +56,6 @@ class CartManager {
                     const producto = pedido.producto.find(elemento => elemento.pid === pid);
                     if (!producto) {
                         pedido.producto.push({ "pid": pid, "pqty": pqty })
-                        console.log(newCart);
                         await fs.promises.writeFile(this.path, JSON.stringify(newCart, null, 2));
                         return
                     } else {
@@ -72,8 +65,7 @@ class CartManager {
                         return
                     }
                 } 
-                await fs.promises.writeFile(this.path, JSON.stringify(newCart));
-            }*/
+            }
         } catch (e) {
             throw new Error(e)
         }

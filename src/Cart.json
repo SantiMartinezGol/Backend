@@ -1,10 +1,32 @@
 [
   {
     "cid": 1,
-    "producto": []
+    "producto": [
+      {
+        "pid": 7,
+        "pqty": 1
+      }
+    ]
   },
   {
     "cid": 2,
+    "producto": [
+      {
+        "pid": 1,
+        "pqty": 2
+      },
+      {
+        "pid": 5,
+        "pqty": 2
+      },
+      {
+        "pid": 2,
+        "pqty": 2
+      }
+    ]
+  },
+  {
+    "cid": 3,
     "producto": []
   }
 ]
