@@ -1,86 +1,99 @@
 [
-    {
-      "id": "1",
-      "title": "Producto1",
-      "description": "Prueba",
-      "price": 10,
-      "image": "sin img",
-      "code": "A1",
-      "stock": 20
-    },
-    {
-      "id": "2",
-      "title": "Producto2",
-      "description": "Prueba",
-      "price": 250,
-      "image": "sin img",
-      "code": "A2",
-      "stock": 20
-    },
-    {
-      "id": "3",
-      "title": "Producto3",
-      "description": "Prueba",
-      "price": 10,
-      "image": "sin img",
-      "code": "A3",
-      "stock": 20
-    },
-    {
-      "id": "4",
-      "title": "Producto4",
-      "description": "Prueba",
-      "image": "sin img",
-      "code": "A4",
-      "stock": 20
-    },
-    {
-      "id": "5",
-      "title": "Producto",
-      "description": "Prueba",
-      "price": 10,
-      "image": "sin img",
-      "code": "A5",
-      "stock": 2
-    },
-    {
-      "id": "6",
-      "title": "Producto6",
-      "description": "Prueba",
-      "image": "sin img",
-      "code": "A6",
-      "stock": 25
-    },
-    {
-      "id": "7",
-      "title": "Producto7",
-      "description": "Prueba",
-      "image": "sin img",
-      "code": "A7",
-      "stock": 7
-    },
-    {
-      "id": "8",
-      "title": "Producto8",
-      "description": "Prueba",
-      "image": "sin img",
-      "code": "A8",
-      "stock": 16
-    },
-    {
-      "id": "9",
-      "title": "Producto9",
-      "description": "Prueba",
-      "image": "sin img",
-      "code": "A9",
-      "stock": 9
-    },
-    {
-      "id": "10",
-      "title": "Producto10",
-      "description": "Prueba",
-      "image": "sin img",
-      "code": "A10",
-      "stock": 35
-    }
-  ]
+  {
+    "id": 1,
+    "title": "Producto10",
+    "description": "Pruebaa",
+    "code": "A4+",
+    "price": 2500,
+    "stock": 9,
+    "category": "producto de reloj",
+    "status": true
+  },
+  {
+    "id": 2,
+    "title": "Producto2",
+    "description": "Prueba",
+    "price": 250,
+    "image": "sin img",
+    "code": "A2",
+    "stock": 20
+  },
+  {
+    "id": 3,
+    "title": "Producto10",
+    "description": "Pruebaa",
+    "code": "A3",
+    "price": 2500,
+    "stock": 9,
+    "category": "varios",
+    "status": true
+  },
+  {
+    "id": 4,
+    "title": "Producto4",
+    "description": "Pruebaa",
+    "code": "A4",
+    "price": 2500,
+    "stock": 9,
+    "category": "varios",
+    "status": true
+  },
+  {
+    "id": 5,
+    "title": "Producto5",
+    "description": "Pruebaa",
+    "code": "A5",
+    "price": 2500,
+    "stock": 9,
+    "category": "varios",
+    "status": true
+  },
+  {
+    "id": 6,
+    "title": "Producto6",
+    "description": "Pruebaa",
+    "code": "A6",
+    "price": 2500,
+    "stock": 14,
+    "category": "varios",
+    "status": true
+  },
+  {
+    "id": "7",
+    "title": "Producto7",
+    "description": "Prueba",
+    "image": "sin img",
+    "code": "A7",
+    "stock": 7
+  },
+  {
+    "id": 8,
+    "title": "Producto8",
+    "description": "Prueba",
+    "code": "A8",
+    "price": 5000,
+    "stock": 40,
+    "category": "varios",
+    "status": true
+  },
+  {
+    "id": 9,
+    "title": "Producto10",
+    "description": "Pruebaa",
+    "code": "A4+",
+    "price": 2500,
+    "stock": 9,
+    "category": "producto de reloj",
+    "status": true
+  },
+  {
+    "id": 10,
+    "title": "Producto10",
+    "description": "Prueba",
+    "code": "A10",
+    "price": 5000,
+    "stock": 140,
+    "category": "varios",
+    "status": true
+  }
+]

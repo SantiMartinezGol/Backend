@@ -1,3 +1,4 @@
+import { error } from 'console';
 import fs from 'fs';
 
 class ProductManager {
@@ -10,7 +11,7 @@ class ProductManager {
         this.path = `./Productos.json`;
     }
 
-     async getProducts() {
+    async getProducts() {
         try {
             let productsFile = await fs.promises.readFile(this.path, "utf-8")
             return JSON.parse(productsFile)
@@ -21,38 +22,36 @@ class ProductManager {
     }
 
     async addProduct(product) {
-        try {
-            const { title, description, price, image, code, stock } = product;
+        /*  try { */
+        const { title, description, price, code, status, stock, category } = product;
+        const productsFile = await fs.promises.readFile(this.path, "utf-8")
+        let newProducts = JSON.parse(productsFile)
 
-            const productsFile = await fs.promises.readFile(this.path, "utf-8")
+        const valid = newProducts.find(
+            (p) => p.id === product.id || p.code === product.code
+        );
 
-            let newProducts = JSON.parse(productsFile)
+        if (valid) {
 
-            const valid = newProducts.find(
-                (p) => p.id === product.id || p.code === product.code
-            );
+            let a = { code: 400, message: "ID o CODE repetido", status: "Error" };
+            return a
+        }
 
-            if (valid) {
-                throw new Error("ID o CODE repetido");
-            }
+        if (title === undefined || description === undefined || price === undefined || code === undefined || stock === undefined || category === undefined) {
 
-            if (title === undefined || description === undefined || price === undefined || image === undefined || code === undefined || stock === undefined) {
+            let a = { code: 400, message: "Todos los campos son requeridos", status: "Error" };
+            return a
 
-                throw new Error("Todos los campos son requeridos");
-
-            } else {
-                //Busca el maximo id por si la lista esta desordenada!
-                this.lastId = Math.max(...newProducts.map(p => p.id)) + 1;
-                newProducts.push({
-                    id: this.lastId++,
-                    ...product,
-                })
-            }
-
+        } else {
+            //Busca el maximo id por si la lista esta desordenada!
+            this.lastId = Math.max(...newProducts.map(p => p.id)) + 1;
+            newProducts.push({
+                id: this.lastId++,
+                ...product,
+            })
             await fs.promises.writeFile(this.path, JSON.stringify(newProducts, null, 2))
-            return "Producto agregado";
-        } catch (e) {
-            throw new Error(e)
+            let a = { code: 200, message: "Producto agregado", status: "Exito" };
+            return a;
         }
     }
 
@@ -62,9 +61,6 @@ class ProductManager {
             let idProduct = JSON.parse(productsFile);
 
             const searchProduct = idProduct.find((p) => p.id === id);
-           /*  if (!searchProduct) {
-                throw new Error("NotFound");
-            }   */
             return searchProduct;
         } catch (e) {
             throw new Error(e)
@@ -75,17 +71,23 @@ class ProductManager {
         try {
             let productsFile = await fs.promises.readFile(this.path, "utf-8")
             let products = JSON.parse(productsFile);
+            let idNumber = parseInt(id)
+            let idProduct = products.findIndex((p) => p.id === idNumber);
+            if (idProduct >= 1) {
+                products.splice(idProduct, 1, { id: idNumber, ...product });
 
-            let idProduct = products.findIndex((p) => p.id === id);
+                await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
 
-            products.splice(idProduct, 1, { id, ...product });
-
-            await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
-
-            return "Producto modificado!"
-
+                let a = { code: 200, message: "Producto modificado", status: "Exito" };
+                return a
+            } else {
+                let a = { code: 400, message: "Producto no encontrado", status: "Error" };
+                return a
+            }
         } catch (e) {
             throw new Error(e)
+            let a = { code: 400, message: "Producto no encontrado", status: "Error" };
+            return a
         }
 
     }
@@ -94,17 +96,19 @@ class ProductManager {
         try {
             let productsFile = await fs.promises.readFile(this.path, "utf-8")
             let products = JSON.parse(productsFile);
-
-            const idProduct = products.find((p) => p.id === id);
+            let idNumber = parseInt(id)
+            const idProduct = products.find((p) => p.id === idNumber);
             if (!idProduct) {
-                throw new Error("El producto no existe!")
-            }
+                let a = { code: 400, message: "Producto no encontrado", status: "Error" };
+                return a
 
-            let productDelete = products.filter((p) => p.id !== id);
+            }
+            let productDelete = products.filter((p) => p.id !== idNumber);
 
             await fs.promises.writeFile(this.path, JSON.stringify(productDelete, null, 2))
+            let a = { code: 200, message: " Producto eliminado Id: " + idNumber, status: "Exito" };
+            return a
 
-            return "Producto eliminado Id: " + id
 
         } catch (e) {
             throw new Error(e)
@@ -130,10 +134,9 @@ const productos = new ProductManager();
 
 const test = async () => {
 
-    console.log(await productos.addProduct({ ...newProduct1 }));
-    console.log(await productos.getProducts);
+    //console.log(await productos.addProduct({ ...newProduct1 }));
+    console.log(await productos.getProducts());
 }
-
 //test()
 
 const main = async () => {
