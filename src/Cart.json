@@ -13,7 +13,7 @@
     "producto": [
       {
         "pid": 1,
-        "pqty": 2
+        "pqty": 3
       },
       {
         "pid": 5,
@@ -27,6 +27,10 @@
   },
   {
     "cid": 3,
+    "producto": []
+  },
+  {
+    "cid": 4,
     "producto": []
   }
 ]
