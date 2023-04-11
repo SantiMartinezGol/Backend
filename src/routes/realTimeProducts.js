@@ -2,7 +2,7 @@ import { request, response } from "express";
 import ProductManager from "../../public/ProductManager.js";
 import { Server } from 'socket.io';
 
-export const realTime = async (req, res) => {
+const realTimeProducts = async (req, res) => {
    try {
       const productos = new ProductManager();
       const productList = await productos.getProducts()
@@ -26,6 +26,6 @@ export const realTime = async (req, res) => {
    }
 }
 
-
+export default realTimeProducts
 
 

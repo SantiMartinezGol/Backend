@@ -3,8 +3,8 @@ import { engine } from 'express-handlebars';
 import { resolve } from 'path';
 import cartRouter from './routes/cartRouter.js';
 import productRouter from './routes/productRouter.js';
-import {home} from  './routes/productList.js';
-import {realTime} from './routes/realTimeProducts.js';
+import productList from './routes/productList.js';
+import realTimeProducts from './routes/realTimeProducts.js';
 
 void (async () => {
     try {
@@ -15,8 +15,8 @@ void (async () => {
         app.use(express.urlencoded({ extended: true }));
         app.use("/api/products", productRouter)
         app.use("/api/carts", cartRouter)
-        app.use("/",home)
-        app.use("/api/realtimeproducts",realTime)
+        app.use("/",productList)
+        app.use("/api/realtimeproducts",realTimeProducts)
 
         const viewsPath = resolve('views');
        
