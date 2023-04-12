@@ -1,6 +1,6 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
-import { resolve } from 'path';
+import { format, resolve } from 'path';
 import cartRouter from './routes/cartRouter.js';
 import productRouter from './routes/productRouter.js';
 import productList from './routes/productList.js';
@@ -19,7 +19,6 @@ void (async () => {
         app.use("/api/realtimeproducts",realTimeProducts)
 
         const viewsPath = resolve('views');
-       
         app.engine('handlebars', engine({
             layoutsDir: `${viewsPath}/layouts`,
             defaultLayout: `${viewsPath}/layouts/main.handlebars`,
