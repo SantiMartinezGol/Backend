@@ -9,7 +9,7 @@ class ProductManager {
     constructor() {
         this.#products = [];
         this.path = `./Productos.json`;
-    }
+    } 
 
     async getProducts() {
         try {

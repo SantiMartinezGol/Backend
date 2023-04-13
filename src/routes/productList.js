@@ -2,13 +2,12 @@ import { request, response } from "express";
 import ProductManager from "../ProductManager.js";
 import { Router } from 'express';
 import { createServer } from "http"; 
-import { socketServer } from "../app.js";
+import{ socketServer } from "../app.js";
 
 
 const productList = Router();
 
 const httpServer = createServer();
-//const socketServer = new Server(httpServer);
 
 productList.get("/", async (req, res) => {
    try {

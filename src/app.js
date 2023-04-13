@@ -7,7 +7,7 @@ import productRouter from './routes/productRouter.js';
 import productList from './routes/productList.js';
 
 const app = express();
-const PORT = 8080;
+const PORT = 8085; 
 
 app.engine('handlebars', handlebars.engine());
 
@@ -25,27 +25,20 @@ app.use("/api/realtimeproducts",productList)
 const httpServer = app.listen(PORT, () => {
     console.log(`El servidor escucha el puerto: ${PORT}`);
 });
-
+;
 const socketServer = new Server(httpServer);
 
 socketServer.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
-});
 
-
-export { socketServer };  
- /*  socket.on('addProduct', (data) => {
+  socket.on('addProduct', (data) => {
     products.push(data);
     socket.emit('listProducts', products);
   });
+
   socket.on('deleteProduct', (data) => {
     products = products.filter((products) => products.name !== data.name);
     socket.emit('listProducts', products);
-  }); */
-
-
-
-
-
-
-
+  }); 
+});
+export {socketServer}
