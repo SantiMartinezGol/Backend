@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import CartManager from '../../public/CartManager.js';
-import ProductManager from '../../public/ProductManager.js';
+import CartManager from '../CartManager.js';
+import ProductManager from '../ProductManager.js';
 
 const carro = [];
 const cartRouter = Router();

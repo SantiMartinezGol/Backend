@@ -8,7 +8,7 @@ class ProductManager {
 
     constructor() {
         this.#products = [];
-        this.path = `./src/Productos.json`;
+        this.path = `./Productos.json`;
     }
 
     async getProducts() {
@@ -22,22 +22,22 @@ class ProductManager {
     }
 
     async addProduct(product) {
+        alert("Por favor, agrega el producto.");
         const { title, description, price, code, status, stock, category } = product;
         const productsFile = await fs.promises.readFile(this.path, "utf-8")
         let newProducts = JSON.parse(productsFile)
+        console.log(newProducts);
 
         const valid = newProducts.find(
             (p) => p.id === product.id || p.code === product.code
         );
 
         if (valid) {
-
             let a = { code: 400, message: "ID o CODE repetido", status: "Error" };
             return a
         }
 
         if (title === undefined || description === undefined || price === undefined || code === undefined || stock === undefined || category === undefined) {
-
             let a = { code: 400, message: "Todos los campos son requeridos", status: "Error" };
             return a
 

@@ -1,26 +1,89 @@
-<div>
+<div style="width:80%; float: left">
     <h1>Listado de Productos en Real Time</h1>
-    {{#each productList}}
-        <div>
-            <p>Id:{{this.id}} Title: {{this.title}} Description:{{this.description}} Code: {{this.code}} Price: {{this.price}} Stock: {{this.stock}}</p>
-        </div>
+    {{#each productLista}}
+    <div>
+        <p>Id:{{this.id}} Title: {{this.title}} Description:{{this.description}} Code: {{this.code}} Price:
+            {{this.price}} Stock: {{this.stock}}</p>
+    </div>
     {{/each}}
 </div>
+<div style= "width: 15% ; float: right; border: 1px solid black ; padding: 30px; margin-bottom: 50px">
+    <h3>Agregar producto</h3>
+    <form id="Agregar" method="POST">
+		<label for="title">Title</label>
+		<input type="text" id="title" name="title"><br>
 
+		<label for="description">Descripcion:</label>
+		<input type="text" id="description" name="description"><br>
 
+        <label for="code">Code:</label>
+		<input type="text" id="code" name="code"><br>
+
+		<label for="price">Price:</label>
+		<input type="text" id="price" name="price"><br>
+        
+		<label for="stock">Stock:</label>
+		<input type="text" id="stock" name="stock"><br>
+
+		<button type="buttom" value="agregar" id="agregar" onclick="" >Agregar </button>
+	</form>
+</div>
+<div style= "width: 15% ; float: right; border: 1px solid black ; padding: 30px">
+    <h3>Eliminar producto</h3>
+    <form  id="Borrar" method="POST">
+        <label for="id">Id:</label>
+		<input type="text" id="id" name="id"><br>
+       <input style= "margin:auto" type="submit" value="Eliminar producto">
+    </form>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
-<script>
-    const socket = io();
-    socket.emit('message', 'Hola desde el client!!');
+<script>src="../../public/index.js"</script>
+   
+ {{!--         const formulario = document.getElementById('Agregar');
+        formulario.addEventListener('submit', function (event) {
+            event.preventDefault();
+            var title = document.getElementById("title").value;
+            var description = document.getElementById("description").value;
+            var code = document.getElementById("code").value;
+            var price = document.getElementById("price").value;
+            var stock = document.getElementById("stock").value;
 
-   const socketServer = new Server(httpServer); ///// socket
+            if (title == "" || description == "" || code == "" || price == "" || stock == "") {
+                    alert("Por favor, complete todos los campos del formulario.");
+                    return 
+            } 
+            price = parseInt(price)
+            stock= parseInt(stock)
+            let producto = {
+                title,
+                description,
+                code,
+                price,
+                stock
+            }
+        console.log(producto)
+            // socket.emit('chatRoom1', textoInput);
+        });
+             
 
-      socketServer.on('connection', socket => {
-         console.log('Nuevo cliente conectado');
-      });
-      socket.on('message', (data) => {
-         console.log(data);
-      });
+   const socket = io()
+    const addProduct = () => {
+        let product = { name: productName.value, price: productPrice.value };
+        if (productName.value === '' || productPrice.value === '') {
+            alert('All fields are required');
+        } else {
+            socket.emit('addProduct', product);
+        }
+        productName.value = '';+
+        productPrice.value = '';
+    };
 
+    const deleteProduct = () => {
+        socket.emit('deleteProduct', { name: deleteProductTitle.value });
+        deleteProductTitle.value = '';
+    };
 
-</script>
+    socket.on('listProducts', (data) => {
+        let html = makeHtmlProductList(data);
+        productsHtml.innerHTML = html;
+    }); --}}

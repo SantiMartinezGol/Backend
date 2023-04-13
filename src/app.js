@@ -1,55 +1,55 @@
 import express from 'express';
-import { engine } from 'express-handlebars';
-import { format, resolve } from 'path';
+import { __dirname } from './utils.js';
+import handlebars from 'express-handlebars';
+import { Server } from 'socket.io';
+//import { resolve } from 'path';
 import cartRouter from './routes/cartRouter.js';
 import productRouter from './routes/productRouter.js';
 import productList from './routes/productList.js';
-import realTimeProducts from './routes/realTimeProducts.js';
 
-void (async () => {
-    try {
-        const app = express()
-        const PORT = 8083
+const app = express();
+const PORT = 8083;
 
-        app.use(express.json());
-        app.use(express.urlencoded({ extended: true }));
-        app.use("/api/products", productRouter)
-        app.use("/api/carts", cartRouter)
-        app.use("/",productList)
-        app.use("/api/realtimeproducts",realTimeProducts)
+app.engine('handlebars', handlebars.engine());
 
-        const viewsPath = resolve('views');
-        app.engine('handlebars', engine({
-            layoutsDir: `${viewsPath}/layouts`,
-            defaultLayout: `${viewsPath}/layouts/main.handlebars`,
-        }));
-        app.set('view engine', 'handlebars');
-        app.set('views', viewsPath);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'handlebars');
+app.use(express.static(__dirname + '/public'));
 
-        const httpServer = app.listen(PORT, () => {
-            console.log(`El servidor escucha el puerto: ${PORT}`);
-        });
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/api/products", productRouter)
+app.use("/api/carts", cartRouter)
+app.use("/",productList)
+app.use("/api/realtimeproducts",productList)
 
-      
-            
-            /* socket.emit('evento_para_socket_individual', 'Este mensaje solo lo debe recibir el socket');
+const httpServer = app.listen(PORT, () => {
+    console.log(`El servidor escucha el puerto: ${PORT}`);
+});
 
-            socket.broadcast.emit('evento_para_todos_menos_el_socket_actual', 'Este evento lo veran todos los sockets conectados, MENOS el socket actual desde el que se envio el mensaje');
+const socketServer = new Server(httpServer);
 
-            socketServer.emit('evento_para_todos', 'Este mensaje lo reciben todos los sockets conectados.');
+socketServer.on('connection', (socket) => {
+  // socket.emit('messageHistory', messages);
+  //            socket.emit('listProducts', products);
+  // socket.on('message', (data) => {
+  //   let message = { socketId: socket.id, message: data };
+  //   messages.push(message);
+  //   socketServer.emit('messageHistory', messages);
+  // });
 
-            socket.on('chatRoom1', (data) => {
-                console.log(data);
+  socket.on('addProduct', (data) => {
+    products.push(data);
+    socket.emit('listProducts', products);
+  });
+  socket.on('deleteProduct', (data) => {
+    products = products.filter((products) => products.name !== data.name);
 
-                socket.broadcast.emit('chatRoom1', data);
-            }); 
-        });*/
-    }
-    catch (e) {
-        console.log("Error: ");
-        console.log(e);
-    }
-})();
+    socket.emit('listProducts', products);
+  });
+});
+export { socketServer };  
+
 
 
 
