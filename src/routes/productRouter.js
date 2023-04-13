@@ -26,6 +26,10 @@ productRouter.get('/:pid', async (req, res) => {
     if (!product) {
         res.status(200).send({ status: 'Error', message: 'Producto no encontrado' })
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3a0afde7095e0a299006e6bc44037a6f2caebdde
     res.send(product)
 });
 
@@ -35,6 +39,7 @@ productRouter.post('/', async (req, res) => {
     if (!producto.status) {
         producto.status = true
     }
+<<<<<<< HEAD
     try
     {
         const a = await productos.addProduct(producto)
@@ -44,6 +49,17 @@ productRouter.post('/', async (req, res) => {
     {
         res.status(400).send({ status: 'Error', message: 'Producto no agregado' })
     }
+=======
+    try {
+        const a = await productos.addProduct(producto)
+        res.status(a.code).send({ status: a.status, message: a.message })
+
+    }
+    catch (e) {
+        res.status(400).send({ status: 'Error', message: 'Producto no agregado' })
+    }
+
+>>>>>>> 3a0afde7095e0a299006e6bc44037a6f2caebdde
 });
 
 productRouter.put('/:id', async (req, res) => {
@@ -51,6 +67,10 @@ productRouter.put('/:id', async (req, res) => {
     const id = req.params.id;
     const a = await productos.updateProduct(id, producto)
     res.status(a.code).send({ status: a.status, message: a.message })
+<<<<<<< HEAD
+=======
+    //res.status(201).send({status:'Exito', message:'Producto Modificado'})
+>>>>>>> 3a0afde7095e0a299006e6bc44037a6f2caebdde
 });
 
 productRouter.delete('/:id', async (req, res) => {

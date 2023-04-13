@@ -25,7 +25,11 @@
 		<label for="stock">Stock:</label>
 		<input type="text" id="stock" name="stock"><br>
 
+<<<<<<< HEAD
 		<input type="submit" value="agregar" id="agregar">
+=======
+		<button type="buttom" value="agregar" id="agregar" onclick="" >Agregar </button>
+>>>>>>> 3a0afde7095e0a299006e6bc44037a6f2caebdde
 	</form>
 </div>
 <div style= "width: 15% ; float: right; border: 1px solid black ; padding: 30px">
@@ -37,9 +41,39 @@
     </form>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+<<<<<<< HEAD
 {{!--<script>src="../../public/index.js"</script>
    
   
+=======
+<script>src="../../public/index.js"</script>
+   
+ {{!--         const formulario = document.getElementById('Agregar');
+        formulario.addEventListener('submit', function (event) {
+            event.preventDefault();
+            var title = document.getElementById("title").value;
+            var description = document.getElementById("description").value;
+            var code = document.getElementById("code").value;
+            var price = document.getElementById("price").value;
+            var stock = document.getElementById("stock").value;
+
+            if (title == "" || description == "" || code == "" || price == "" || stock == "") {
+                    alert("Por favor, complete todos los campos del formulario.");
+                    return 
+            } 
+            price = parseInt(price)
+            stock= parseInt(stock)
+            let producto = {
+                title,
+                description,
+                code,
+                price,
+                stock
+            }
+        console.log(producto)
+            // socket.emit('chatRoom1', textoInput);
+        });
+>>>>>>> 3a0afde7095e0a299006e6bc44037a6f2caebdde
              
 
    const socket = io()
