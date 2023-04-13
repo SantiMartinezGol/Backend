@@ -1,0 +1,65 @@
+<div style="width:80%; float: left">
+    <h1>Listado de Productos en Real Time</h1>
+    {{#each productLista}}
+    <div>
+        <p>Id:{{this.id}} Title: {{this.title}} Description:{{this.description}} Code: {{this.code}} Price:
+            {{this.price}} Stock: {{this.stock}}</p>
+    </div>
+    {{/each}}
+</div>
+<div style= "width: 15% ; float: right; border: 1px solid black ; padding: 30px; margin-bottom: 50px">
+    <h3>Agregar producto</h3>
+    <form id="Agregar" method="POST">
+		<label for="title">Title</label>
+		<input type="text" id="title" name="title"><br>
+
+		<label for="description">Descripcion:</label>
+		<input type="text" id="description" name="description"><br>
+
+        <label for="code">Code:</label>
+		<input type="text" id="code" name="code"><br>
+
+		<label for="price">Price:</label>
+		<input type="text" id="price" name="price"><br>
+        
+		<label for="stock">Stock:</label>
+		<input type="text" id="stock" name="stock"><br>
+
+		<input type="submit" value="agregar" id="agregar">
+	</form>
+</div>
+<div style= "width: 15% ; float: right; border: 1px solid black ; padding: 30px">
+    <h3>Eliminar producto</h3>
+    <form  id="Borrar" method="POST">
+        <label for="id">Id:</label>
+		<input type="text" id="id" name="id"><br>
+       <input style= "margin:auto" type="submit" value="Eliminar producto">
+    </form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+{{!--<script>src="../../public/index.js"</script>
+   
+  
+             
+
+   const socket = io()
+    const addProduct = () => {
+        let product = { name: productName.value, price: productPrice.value };
+        if (productName.value === '' || productPrice.value === '') {
+            alert('All fields are required');
+        } else {
+            socket.emit('addProduct', product);
+        }
+        productName.value = '';+
+        productPrice.value = '';
+    };
+
+    const deleteProduct = () => {
+        socket.emit('deleteProduct', { name: deleteProductTitle.value });
+        deleteProductTitle.value = '';
+    };
+
+    socket.on('listProducts', (data) => {
+        let html = makeHtmlProductList(data);
+        productsHtml.innerHTML = html;
+    }); --}}
