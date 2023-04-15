@@ -71,16 +71,5 @@ class CartManager {
         }
     }
 }
-//Fin del constructor
-
-/*Pruebas de funcionamiento
-
-const cart = new CartManager();
-
-const test = async () => {
-    console.log(await cart.addToCart(6, 3, 10));
-    console.log(await cart.getCart("1"));
-}
-test()*/
 
 export default CartManager;

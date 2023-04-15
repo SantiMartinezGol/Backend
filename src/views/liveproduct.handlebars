@@ -1,15 +1,16 @@
-<div style="width:80%; float: left">
+<div style="width:80%; float: left" id="list">
     <h1>Listado de Productos en Real Time</h1>
-    {{#each productLista}}
+    {{#each products}}
     <div>
         <p>Id:{{this.id}} Title: {{this.title}} Description:{{this.description}} Code: {{this.code}} Price:
-            {{this.price}} Stock: {{this.stock}}</p>
+            {{this.price}} StockC {{this.stock}} Category: {{this.category}}</p>
     </div>
-    {{/each}}
+    {{/each}}  
 </div>
+
 <div style= "width: 15% ; float: right; border: 1px solid black ; padding: 30px; margin-bottom: 50px">
     <h3>Agregar producto</h3>
-    <form id="Agregar" method="POST">
+
 		<label for="title">Title</label>
 		<input type="text" id="title" name="title"><br>
 
@@ -21,79 +22,113 @@
 
 		<label for="price">Price:</label>
 		<input type="text" id="price" name="price"><br>
-        
+
 		<label for="stock">Stock:</label>
 		<input type="text" id="stock" name="stock"><br>
 
-<<<<<<< HEAD
-		<input type="submit" value="agregar" id="agregar">
-=======
-		<button type="buttom" value="agregar" id="agregar" onclick="" >Agregar </button>
->>>>>>> 3a0afde7095e0a299006e6bc44037a6f2caebdde
-	</form>
+		<label for="category">Category:</label>
+		<input type="text" id="category" name="category"><br><br>
+        
+		<button type="button" value="agregar" id="agregar" onclick="addProduct()">Add Product</button> 
+        	
 </div>
 <div style= "width: 15% ; float: right; border: 1px solid black ; padding: 30px">
     <h3>Eliminar producto</h3>
-    <form  id="Borrar" method="POST">
+ 
         <label for="id">Id:</label>
 		<input type="text" id="id" name="id"><br>
-       <input style= "margin:auto" type="submit" value="Eliminar producto">
-    </form>
+        <button type="button" value="Delete producto" onclick="deleteProduct()">Delete Product</button>
+   
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
-<<<<<<< HEAD
-{{!--<script>src="../../public/index.js"</script>
-   
-  
-=======
-<script>src="../../public/index.js"</script>
-   
- {{!--         const formulario = document.getElementById('Agregar');
-        formulario.addEventListener('submit', function (event) {
-            event.preventDefault();
-            var title = document.getElementById("title").value;
-            var description = document.getElementById("description").value;
-            var code = document.getElementById("code").value;
-            var price = document.getElementById("price").value;
-            var stock = document.getElementById("stock").value;
 
-            if (title == "" || description == "" || code == "" || price == "" || stock == "") {
-                    alert("Por favor, complete todos los campos del formulario.");
-                    return 
-            } 
-            price = parseInt(price)
-            stock= parseInt(stock)
-            let producto = {
-                title,
-                description,
-                code,
-                price,
-                stock
-            }
-        console.log(producto)
-            // socket.emit('chatRoom1', textoInput);
-        });
->>>>>>> 3a0afde7095e0a299006e6bc44037a6f2caebdde
-             
+{{!-- <script src="/public/index.js"></script> --}}
 
-   const socket = io()
-    const addProduct = () => {
-        let product = { name: productName.value, price: productPrice.value };
-        if (productName.value === '' || productPrice.value === '') {
-            alert('All fields are required');
-        } else {
-            socket.emit('addProduct', product);
-        }
-        productName.value = '';+
-        productPrice.value = '';
-    };
 
-    const deleteProduct = () => {
-        socket.emit('deleteProduct', { name: deleteProductTitle.value });
-        deleteProductTitle.value = '';
-    };
+{{!--************************************************************************************************* 
+**                                                                                                  **
+**    Cuando quiero pasar el siguiente script a un archivo separado el navegador me da el error     **
+**    http://localhost:8083/public/index.js net::ERR_ABORTED 404 (Not Found)                        **
+**    u otro indicando la ruta en el cual la coloco                                                 **
+**    y las funciones quedan sin definir                                                            **
+**                                                                                                  **
+***************************************************************************************************--}}
+
+<script> 
+
+    var socket = io()
+
+    var list= document.getElementById("list");
+    //console.log(list)
 
     socket.on('listProducts', (data) => {
-        let html = makeHtmlProductList(data);
-        productsHtml.innerHTML = html;
-    }); --}}
+        console.log(data)
+        let html = ProductListHtml(data);
+        list.innerHTML = html;
+    }); 
+
+    const addProduct = () => {
+    var title = document.getElementById("title").value;
+    var description = document.getElementById("description").value;
+    var code = document.getElementById("code").value;
+    var price = document.getElementById("price").value;
+    var category = document.getElementById("category").value;
+    var stock = document.getElementById("stock").value;
+       if (title == "" || description == "" || code == "" || price == "" || stock == "" || category == "") {
+        alert("Por favor, complete todos los campos del formulario.");
+        return 
+    }   
+    price = parseInt(price)
+    stock= parseInt(stock)
+
+    if (isNaN(price) || isNaN(stock)){
+        alert("Campos incorrectos")
+    }
+    let producto = {
+        title,
+        description,
+        code,
+        price,
+        stock, 
+        category
+    }   
+    if (!producto.status) {
+        producto.status = true
+    }
+   
+    socket.emit('addProduct', producto);
+}
+
+const deleteProduct = () => {
+    var id = document.getElementById("id").value;         
+    id = parseInt(id) 
+    socket.emit('deleteProduct', id);
+}
+
+function ProductListHtml(data) {
+    //console.log(products)
+  
+    return data.map((product) => {
+
+        return `<div style='border: 5px solid rgb(112, 236, 112); width:80%'>
+          <p>  Product Title: ${product.name}</p>
+          <p>  Product Price: ${product.price}</p>
+        </div>`;
+      })
+      .join(' ');    
+
+   {{!--      
+        `<div style= "width:80%">
+
+            <p>Id:{{product.id}} Title: {{product.title}} Description:{{product.description}} Code: {{product.code}} Price:
+            {{product.price}} Stock: {{product.stock}}</p>
+        
+        </div>`;
+      })
+      .join(' '); --}}
+   
+}
+
+
+
+</script>

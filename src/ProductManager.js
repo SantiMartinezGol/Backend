@@ -22,11 +22,9 @@ class ProductManager {
     }
 
     async addProduct(product) {
-        alert("Por favor, agrega el producto.");
         const { title, description, price, code, status, stock, category } = product;
         const productsFile = await fs.promises.readFile(this.path, "utf-8")
         let newProducts = JSON.parse(productsFile)
-        console.log(newProducts);
 
         const valid = newProducts.find(
             (p) => p.id === product.id || p.code === product.code
@@ -109,46 +107,5 @@ class ProductManager {
         }
     }
 }
-
-//Fin del constructor
-
-
-//Pruebas de funcionamiento
-
-const newProduct1 = {
-    title: "Producto1",
-    description: "Prueba",
-    price: 10,
-    image: "sin img",
-    code: "234jkjhajghjsdd",
-    stock: 20,
-};
-
-const productos = new ProductManager();
-
-const test = async () => {
-
-    //console.log(await productos.addProduct({ ...newProduct1 }));
-    console.log(await productos.getProducts());
-}
-//test()
-
-const main = async () => {
-    //Devuelve los productos almacenados en Productos.json
-    //console.log("Lista Productos: ", await productos.getProducts());
-
-    //Devuelve el producto con el id especificado, en este caso el 4
-    //console.log("Producto Encontrado: ", await productos.getProductById(4));
-
-    // Modifica un producto sin cambiar su Id, devuelve la lista de productos actualizada
-    // console.log(await productos.updateProduct(1, { ...newProduct1, code: "MODIFICADO" }));
-    // console.log("Lista Productos: ", await productos.getProducts());
-
-    // Elimina un producto y devuelve la lista de productos actualizada
-    //console.log(await productos.deleteProduct(1));
-    //console.log("Lista Productos ", await productos.getProducts());
-};
-
-//main();
 
 export default ProductManager;

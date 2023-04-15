@@ -1,8 +1,8 @@
 <div>
     <h1>Listado de Productos</h1>
-    {{#each productLista}}
+    {{#each products}}
         <div>
-            <p>Id:{{this.id}} Title: {{this.title}} Description:{{this.description}} Code: {{this.code}} Price: {{this.price}} Stock: {{this.stock}}</p>
+            <p>Id:{{this.id}} Title: {{this.title}} Description:{{this.description}} Code: {{this.code}} Price: {{this.price}} Stock: {{this.stock}} Category: {{this.category}}</p>
         </div>
     {{/each}}
  </div>
