@@ -11,7 +11,6 @@ cartRouter.get('/:cid', async (req, res) => {
     const cid = req.params.cid;
     const number = parseInt(cid);
     const carro = await cart.getCart(number)
-
     res.status(201).send(carro)
 });
 
@@ -19,7 +18,6 @@ cartRouter.post('/', async (req, res) => {
     await cart.addToCart(null, 0, 0)
     res.status(200).send({ status: 'Exito', message: 'Carro creado' })
 });
-
 
 cartRouter.post('/:cid/product/:pid', async (req, res) => {
     const cid = req.params.cid;
@@ -34,6 +32,5 @@ cartRouter.post('/:cid/product/:pid', async (req, res) => {
         res.status(400).send({ status: 'Error', message: 'Producto inexistente' })
     }
 });
-
 
 export default cartRouter;

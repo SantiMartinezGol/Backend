@@ -6,7 +6,7 @@
     "code": "A1",
     "price": 250,
     "stock": 9,
-    "category": "producto de reloj",
+    "category": "Electrodomestico",
     "status": true
   },
   {
@@ -16,7 +16,7 @@
     "price": 200,
     "code": "A2",
     "stock": 20,
-    "category": "producto de reloj",
+    "category": "Electrodomestico",
     "status": true
   },
   {
@@ -26,8 +26,8 @@
     "code": "A3",
     "price": 300,
     "stock": 12,
-    "category": "varios",
-    "status": false
+    "category": "Varios",
+    "status": true
   },
   {
     "id": 4,
@@ -36,7 +36,7 @@
     "code": "A4",
     "price": 100,
     "stock": 15,
-    "category": "varios",
+    "category": "Varios",
     "status": true
   },
   {
@@ -46,8 +46,8 @@
     "code": "A5",
     "price": 500,
     "stock": 18,
-    "category": "varios",
-    "status": false
+    "category": "Varios",
+    "status": true
   },
   {
     "id": 6,
@@ -56,8 +56,8 @@
     "code": "A6",
     "price": 280,
     "stock": 14,
-    "category": "varios",
-    "status": true
+    "category": "Varios",
+    "status": false
   },
   {
     "id": 7,
@@ -66,7 +66,7 @@
     "code": "A7",
     "price": 700,
     "stock": 7,
-    "category": "varios",
+    "category": "Varios",
     "status": true
   },
   {
@@ -76,8 +76,8 @@
     "code": "A8",
     "price": 800,
     "stock": 40,
-    "category": "varios",
-    "status": false
+    "category": "Varios",
+    "status": true
   },
   {
     "id": 9,
@@ -86,8 +86,8 @@
     "code": "A9",
     "price": 180,
     "stock": 11,
-    "category": "producto de reloj",
-    "status": false
+    "category": "Relojeria",
+    "status": true
   },
   {
     "id": 10,
@@ -96,17 +96,17 @@
     "code": "A10",
     "price": 120,
     "stock": 20,
-    "category": "producto de reloj",
+    "category": "Relojeria",
     "status": true
   },
   {
     "id": 11,
-    "title": "aa",
-    "description": "concasuety",
-    "code": "a11",
-    "price": 120,
-    "stock": 5,
-    "category": "v",
-    "status": false
+    "title": "Producto11",
+    "description": "Prueba",
+    "code": "A11",
+    "price": 175,
+    "stock": 32,
+    "category": "Varios",
+    "status": true
   }
 ]

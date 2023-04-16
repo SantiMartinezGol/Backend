@@ -1,44 +1,46 @@
-<div style="width:80%; float: left" id="list">
-    <h1>Listado de Productos en Real Time</h1>
+<div style="width:75%; float: left">
+    <h2 style="padding:5px; margin-left:2%">List of Products in Real Time</h2>
+    <div id="list">
     {{#each products}}
     <div>
         <p>Id:{{this.id}} Title: {{this.title}} Description:{{this.description}} Code: {{this.code}} Price:
             {{this.price}} StockC {{this.stock}} Category: {{this.category}}</p>
     </div>
     {{/each}}  
+    </div>
 </div>
 
-<div style= "width: 15% ; float: right; border: 1px solid black ; padding: 30px; margin-bottom: 50px">
-    <h3>Agregar producto</h3>
+<div style= "width: 15% ; float: left; border: 1px solid black; box-shadow: 2px 2px 1px 1px grey; padding: 0 30px; margin: 50px 2% 10px">
+    <h4>Add Product</h4>
 
 		<label for="title">Title</label>
-		<input type="text" id="title" name="title"><br>
+		<input type="text" id="title" name="title" placeholder="Text"><br>
 
 		<label for="description">Descripcion:</label>
-		<input type="text" id="description" name="description"><br>
+		<input type="text" id="description" name="description" placeholder="Text"><br>
 
         <label for="code">Code:</label>
-		<input type="text" id="code" name="code"><br>
+		<input type="text" id="code" name="code" placeholder="Text"><br>
 
 		<label for="price">Price:</label>
-		<input type="text" id="price" name="price"><br>
+		<input type="text" id="price" name="price" placeholder="Number"><br>
 
 		<label for="stock">Stock:</label>
-		<input type="text" id="stock" name="stock"><br>
+		<input type="text" id="stock" name="stock" placeholder="Number"><br>
 
 		<label for="category">Category:</label>
-		<input type="text" id="category" name="category"><br><br>
+		<input type="text" id="category" name="category" placeholder="Text"><br>
         
-		<button type="button" value="agregar" id="agregar" onclick="addProduct()">Add Product</button> 
+		<button type="button" value="agregar" id="agregar" onclick="addProduct()" style="margin: 5px auto">Add Product</button> 
         	
 </div>
-<div style= "width: 15% ; float: right; border: 1px solid black ; padding: 30px">
-    <h3>Eliminar producto</h3>
+<div style= "width: 15% ; float: left; border: 1px solid black; box-shadow: 2px 2px 1px 1px grey; padding: 0 30px; margin: 10px 2% 20px">
+    <h4>Activate/Deactivate Product</h4>
  
         <label for="id">Id:</label>
-		<input type="text" id="id" name="id"><br>
-        <button type="button" value="Delete producto" onclick="deleteProduct()">Delete Product</button>
-   
+		<input type="text" id="id" name="id" placeholder="Number"><br>
+        <button type="button" value="Delete producto" onclick="deleteProduct()" style="margin: 5px auto">Deactivate Product</button>
+        <button type="button" value="Activater producto" onclick="activateProduct()" style="margin: 0 auto 5px auto">Activate Product</button>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
 
@@ -59,7 +61,6 @@
     var socket = io()
 
     var list= document.getElementById("list");
-    //console.log(list)
 
     socket.on('listProducts', (data) => {
         console.log(data)
@@ -75,14 +76,14 @@
     var category = document.getElementById("category").value;
     var stock = document.getElementById("stock").value;
        if (title == "" || description == "" || code == "" || price == "" || stock == "" || category == "") {
-        alert("Por favor, complete todos los campos del formulario.");
+        alert("Please, complete all the fields of the form.");
         return 
     }   
     price = parseInt(price)
     stock= parseInt(stock)
 
     if (isNaN(price) || isNaN(stock)){
-        alert("Campos incorrectos")
+        alert("Wrong fields")
     }
     let producto = {
         title,
@@ -94,8 +95,7 @@
     }   
     if (!producto.status) {
         producto.status = true
-    }
-   
+    }  
     socket.emit('addProduct', producto);
 }
 
@@ -105,30 +105,20 @@ const deleteProduct = () => {
     socket.emit('deleteProduct', id);
 }
 
+const activateProduct = () => {
+    var id = document.getElementById("id").value;         
+    id = parseInt(id) 
+    socket.emit('activateProduct', id);
+}
 function ProductListHtml(data) {
-    //console.log(products)
   
     return data.map((product) => {
-
-        return `<div style='border: 5px solid rgb(112, 236, 112); width:80%'>
-          <p>  Product Title: ${product.name}</p>
-          <p>  Product Price: ${product.price}</p>
-        </div>`;
-      })
-      .join(' ');    
-
-   {{!--      
-        `<div style= "width:80%">
-
-            <p>Id:{{product.id}} Title: {{product.title}} Description:{{product.description}} Code: {{product.code}} Price:
-            {{product.price}} Stock: {{product.stock}}</p>
-        
-        </div>`;
-      })
-      .join(' '); --}}
-   
+        return `<div >
+             <p style='box-shadow: 2px 2px 1px 1px grey; width:75%; border: 1px solid black; padding:5px; margin-left:1.5%'>
+                Id:   ${product.id}   Title:    ${product.title}    Description:   ${product.description}  Code:  ${product.code} Price:
+                ${product.price}   Category:  ${product.category}   Stock:   ${product.stock}
+            </div>`; 
+    })
+    .join(' ');    
 }
-
-
-
 </script>

@@ -42,6 +42,5 @@ console.log(id);
 //Filtrar por status 
 // y renderizar
 }
-
-            // socket.emit('chatRoom1', textoInput);
+;
 

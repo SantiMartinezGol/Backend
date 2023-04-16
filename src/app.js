@@ -8,7 +8,7 @@ import productList from './routes/productList.js';
 import ProductManager from './ProductManager.js';
 
 const app = express();
-const PORT = 8085; 
+const PORT = 8083; 
 
 const prod = new ProductManager();
 
@@ -35,34 +35,38 @@ socketServer.on('connection', (socket) => {
   (async () => {
     let products =  await prod.getProducts();
     products = products.filter((products) => products.status !== false);
-    //console.log(products); 
     socket.emit('listProducts', products);
-   /*    } catch {
-      console.log("Error de conexion")
-    }*/
   })(); 
   
-    socket.on('addProduct', (data) => {
+  socket.on('addProduct', (data) => {
     (async () => {
-    await prod.addProduct(data)
-    let products = await prod.getProducts()
-    products = products.filter((products) => products.status !== false);
-
-    socket.emit('listProducts', products);
+      await prod.addProduct(data)
+      let products = await prod.getProducts()
+      products = products.filter((products) => products.status !== false);
+      socket.emit('listProducts', products);
     })();
   });
 
   socket.on('deleteProduct', (data) => {
     (async () => {
-    let product = await prod.getProductById(data) 
-    product.status = false;
-    await prod.updateProduct(product.id, product)
-    let products = await prod.getProducts()
-    products = products.filter((products) => products.status !== false);
-   
-    socket.emit('listProducts', products);
+      let product = await prod.getProductById(data) 
+      product.status = false;
+      await prod.updateProduct(product.id, product)
+      let products = await prod.getProducts()
+      products = products.filter((products) => products.status !== false);
+      socket.emit('listProducts', products);
     })();
   }); 
 
+  socket.on('activateProduct', (data) => {
+    (async () => {
+      let product = await prod.getProductById(data) 
+      product.status = true;
+      await prod.updateProduct(product.id, product)
+      let products = await prod.getProducts()
+      products = products.filter((products) => products.status !== false);
+      socket.emit('listProducts', products);
+    })();
+  }); 
 }); 
 export {socketServer}
