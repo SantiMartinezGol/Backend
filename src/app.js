@@ -6,28 +6,38 @@ import cartRouter from './routes/cartRouter.js';
 import productRouter from './routes/productRouter.js';
 import productList from './routes/productList.js';
 import ProductManager from './ProductManager.js';
+import mongoose from 'mongoose';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
-const PORT = 8083; 
+const PORT = 8083;
 
-const prod = new ProductManager();
+void (async () => {
+  await mongoose.connect(process.env.MONGO_DB_URI,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 
+  const app = express();
+
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use("/api/products", productRouter)
+  app.use("/api/carts", cartRouter)
+  app.use("/", productList)
+  app.use("/api/realtimeproducts", productList)
+
+  app.listen(PORT, () => {
+    console.log('Server listening on port 8083');
+  });
+})();
+/* 
 app.engine('handlebars', handlebars.engine());
-
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use("/api/products", productRouter)
-app.use("/api/carts", cartRouter)
-app.use("/",productList)
-app.use("/api/realtimeproducts",productList)
-
-const httpServer = app.listen(PORT, () => {
-    console.log(`El servidor escucha el puerto: ${PORT}`);
-});
 
 const socketServer = new Server(httpServer);
 
@@ -68,5 +78,6 @@ socketServer.on('connection', (socket) => {
       socket.emit('listProducts', products);
     })();
   }); 
-}); 
+});  
 export {socketServer}
+*/

@@ -1,5 +1,4 @@
-[
-  {
+[  {
     "id": 1,
     "title": "Producto1",
     "description": "Prueba",
@@ -9,6 +8,7 @@
     "category": "Electrodomestico",
     "status": true
   },
+
   {
     "id": 2,
     "title": "Producto2",
