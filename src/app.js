@@ -5,7 +5,6 @@ import { Server } from 'socket.io';
 import cartRouter from './routes/cartRouter.js';
 import productRouter from './routes/productRouter.js';
 import productList from './routes/productList.js';
-import ProductManager from './ProductManager.js';
 import mongoose from 'mongoose';
 import dotenv from "dotenv";
 
