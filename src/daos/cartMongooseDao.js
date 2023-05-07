@@ -1,6 +1,7 @@
 import cartModel from "../models/cartSchema.js";
 
 class CartMongooseDao {
+  
   async getOne(id) {
     const cartDocument = await cartModel.findOne({ _id: id });
     if (cartDocument) {
@@ -12,7 +13,7 @@ class CartMongooseDao {
         }))
       }
     } else {
-      return  ////agregar nuevo carro
+      return
     }
   }
 
@@ -24,17 +25,30 @@ class CartMongooseDao {
     }
   }
 
-  async updateOne(cid, prod) {
-    const cartDocument = await cartModel.findOneAndUpdate({ _id: cid }, prod, { new: true, upsert: true });
-    console.log(cartDocument);
-    /*  return{
-       id: cartDocument._id,
-       producto: [{
-         pid: cartDocument.producto.pid,
-         pqty: cartDocument.producto.pqty
-       }]
-     } */
-  }
+  async insert(cid, pid) {
+    const updateProducts = await cartModel.findOneAndUpdate(       
+      { _id: cid, 'producto._id': pid },
+      { $inc: { 'producto.$.pqty': 1 } },
+      { new: true }
+    );
+
+    if (!updateProducts) {
+      await cartModel.updateOne(
+        { _id: cid },
+        { $push: { producto: { _id: pid, pqty: 1 } } }
+      );
+    };
+
+    const cartDocument = await cartModel.findById(cid);
+
+    return {
+      id: cartDocument._id,
+      producto: cartDocument.producto.map(p => ({
+          id: p._id,
+          pqty: p.pqty        
+      }))
+    }
+  } 
 }
 
 export default CartMongooseDao;

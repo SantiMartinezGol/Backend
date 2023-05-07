@@ -1,4 +1,3 @@
-import ProductManager from "../managers/productManager.js";
 import productModel from "../models/productSchema.js";
 
 class ProductMongooseDao {
@@ -19,27 +18,25 @@ class ProductMongooseDao {
 
   async getOne(id) {
 
-      const productDocument = await productModel.findOne({ _id: id });
-      //console.log(productDocument);
-      if (productDocument){
-        return {
-              id: productDocument._id,
-              title: productDocument.title,
-              description: productDocument.description,
-              code: productDocument.code,
-              price: productDocument.price,
-              stock: productDocument.stock,
-              category: productDocument.category,
-              status: productDocument.status
-        } 
-      } else {
-            return
-      }      
+    const productDocument = await productModel.findOne({ _id: id });
+    if (productDocument){
+      return {
+        id: productDocument._id,
+        title: productDocument.title,
+        description: productDocument.description,
+        code: productDocument.code,
+        price: productDocument.price,
+        stock: productDocument.stock,
+        category: productDocument.category,
+        status: productDocument.status
+      } 
+    } else {
+      return
+    }      
   }
 
   async create(data) {
     const productDocument = await productModel.create(data);
-    console.log(productDocument);
     return {
       id: productDocument._id,
       title: productDocument.title,
@@ -54,8 +51,6 @@ class ProductMongooseDao {
 
   async updateOne(id, data) {
     const productDocument = await productModel.findOneAndUpdate({ _id: id }, data, { new: true });
-
-    console.log(data);
     return {
       id: productDocument._id,
       title: productDocument.title,
@@ -70,7 +65,7 @@ class ProductMongooseDao {
 
   async deleteOne(id) {
     const productDocument = await productModel.findOneAndUpdate({ _id: id }, { status: false });
-    return //res.send({ status: 'Succsess', message: 'Product Deleted' })
+    return
   }
 }
 export default ProductMongooseDao;

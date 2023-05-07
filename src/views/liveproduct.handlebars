@@ -63,7 +63,6 @@
     var list= document.getElementById("list");
 
     socket.on('listProducts', (data) => {
-        console.log(data)
         let html = ProductListHtml(data);
         list.innerHTML = html;
     }); 

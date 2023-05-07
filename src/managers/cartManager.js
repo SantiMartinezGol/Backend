@@ -3,7 +3,6 @@ import CartMongooseDao from "../daos/CartMongooseDao.js";
 class CartManager {
   constructor() {
     this.cartDao = new CartMongooseDao();
-
   }
 
   async getCart(id) {
@@ -12,22 +11,11 @@ class CartManager {
 
   async createCart(prod) {
     const newCart = await this.cartDao.create(prod);
-    console.log(newCart);
     return newCart;
   }
 
-  async addToCart(cid, pid, data) {
-
-    data.map
-    //const carrito = await this.cartDao.getOne(cid)
-
-    //console.log(data);
-
-    //const filtrado = carrito.producto.find(pid = pid)
-    //  console.log(filtrado);
-
-    //let prod = { "pid": pid, "pqty": pqty + 1 }
-    return //this.cartDao.updateOne(cid,prod);
+  async addToCart(cid, pid) {
+    return this.cartDao.insert(cid, pid);
   }
 }
 export default CartManager;
