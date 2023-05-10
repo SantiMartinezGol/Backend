@@ -1,12 +1,12 @@
-import ProductMongooseDao from "../daos/productMongooseDao.js";
+import ProductMongooseDao from '../daos/productMongooseDao.js';
 
 class ProductManager {
   constructor() {
     this.productDao = new ProductMongooseDao();
   }
 
-  async getProducts() {
-    return this.productDao.find();
+  async getProducts(limit,page) {
+    return this.productDao.find(limit,page);
   }
 
   async getProductById(id) {

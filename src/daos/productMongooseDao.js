@@ -1,24 +1,15 @@
-import productModel from "../models/productSchema.js";
+import productSchema from '../models/productSchema.js';
 
 class ProductMongooseDao {
-  async find() {
-    const productsDocument = await productModel.find({status: true });
+  async find(limit,page) {
+    const productsDocument = await productSchema.paginate({status: true },{limit, page});
     
-    return productsDocument.map(document => ({
-      id: document._id,
-      title: document.title,
-      description: document.description,
-      code: document.code,
-      price: document.price,
-      stock: document.stock,
-      category: document.category,
-      status: document.status
-    }));
+    return productsDocument
   }
 
   async getOne(id) {
 
-    const productDocument = await productModel.findOne({ _id: id });
+    const productDocument = await productSchema.findOne({ _id: id });
     if (productDocument){
       return {
         id: productDocument._id,
@@ -36,7 +27,7 @@ class ProductMongooseDao {
   }
 
   async create(data) {
-    const productDocument = await productModel.create(data);
+    const productDocument = await productSchema.create(data);
     return {
       id: productDocument._id,
       title: productDocument.title,
@@ -49,8 +40,12 @@ class ProductMongooseDao {
     }
   }
 
-  async updateOne(id, data) {
-    const productDocument = await productModel.findOneAndUpdate({ _id: id }, data, { new: true });
+  async updateOne (id, data) {
+    const productDocument = await productSchema.findOneAndUpdate({ _id: id }, data, { new: true });
+  
+    if (!productDocument) {
+      throw new Error('No se encontró el producto');
+    } 
     return {
       id: productDocument._id,
       title: productDocument.title,
@@ -60,12 +55,8 @@ class ProductMongooseDao {
       stock: productDocument.stock,
       category: productDocument.category,
       status: productDocument.status
-    }
-  }
-
-  async deleteOne(id) {
-    const productDocument = await productModel.findOneAndUpdate({ _id: id }, { status: false });
-    return
+    };
   }
 }
+
 export default ProductMongooseDao;

@@ -1,17 +1,18 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
-const cartCollection = "carts"
+const cartCollection = 'carts';
 
 const cartSchema = new mongoose.Schema({
-  producto: {
+  products: {
     type: [{
-      _id: { type: Schema.Types.ObjectId, required: [true, "El Id del producto es obligatorio"] },
-      pqty: { type: Schema.Types.Number, required: [true, "La cantidad es requerida"] }
+      _id: { type: Schema.Types.ObjectId, index: true, ref: 'products', require: true },
+      pqty: { type: Schema.Types.Number, require: true }
     }],
-    required: [true, "Al menos tiene que haber un producto"],
   }
+})
+cartSchema.pre('findOne', function () {
+  this.populate(['products._id']);
 });
 
-const cartModel = mongoose.model(cartCollection, cartSchema);
+export default mongoose.model(cartCollection, cartSchema);
 
-export default cartModel;

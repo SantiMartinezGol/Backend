@@ -1,10 +1,10 @@
 import { request, response } from "express";
-//import ProductManager from "../ProductManager.js";
+import ProductManagER from "../daos/productFsDao.js"
 import { Router } from 'express';
 //import { socketServer } from "../app.js";
 
 const productList = Router();
-//const prod = new ProductManager();
+const products = new ProductManagER();
 
 productList.get("/", async (req, res) => {
    try {
