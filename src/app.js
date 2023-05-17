@@ -32,10 +32,7 @@ void (async () => {
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-  app.use("/api/products", productRouter)
-  app.use("/api/carts", cartRouter)
-  app.use("/api/users", userRouter)
-  app.use("/api/sessions", sessionRouter)
+
   //app.use("/", productList)
   //app.use("/api/realtimeproducts", productList)
   app.use(cookieParser());
@@ -44,11 +41,14 @@ void (async () => {
         mongoUrl: process.env.MONGO_DB_URI,
         ttl: 10,
       }),
-      secret: 'CoderS3cR3tC0D3',
+      secret: process.env.SECRET_SESSION,
       resave: false,
       saveUninitialized: false
     }));
-
+  app.use("/api/products", productRouter)
+  app.use("/api/carts", cartRouter)
+  app.use("/api/users", userRouter)
+  app.use("/api/sessions", sessionRouter)
     initializePassport();
     app.use(passport.initialize());
     app.use(passport.session());

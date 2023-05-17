@@ -5,10 +5,11 @@ import { createHash, isValidPassword } from "../utils/index.js";
 export const login = async (req, res) => {
   const manager = new SessionManager();
   const user = await manager.login(req.body)
-  console.log(user);
-  //req.session.user = user;
+  const dto = {...user, password:undefined}
+  req.session.email = user.email;
+  console.log(req.session.email);
   if (user) {
-    res.send({ message: 'Login success!' });
+    res.send({ message: 'Login success!', dto });
   } else {
     return res.status(401).send({ message: 'Login failed, invalid password.' })
   }
