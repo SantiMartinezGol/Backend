@@ -19,8 +19,6 @@ import cartRouter from './routes/cartRouter.js';
 import productRouter from './routes/productRouter.js';
 
 
-//const app = express();
-const PORT = 8083;
 
 void (async () => {
   await mongoose.connect(process.env.MONGO_DB_URI,{
@@ -45,15 +43,16 @@ void (async () => {
       resave: false,
       saveUninitialized: false
     }));
-  app.use("/api/products", productRouter)
-  app.use("/api/carts", cartRouter)
-  app.use("/api/users", userRouter)
-  app.use("/api/sessions", sessionRouter)
     initializePassport();
     app.use(passport.initialize());
     app.use(passport.session());
 
-  app.listen(PORT, () => {
+  app.use("/api/products", productRouter)
+  app.use("/api/carts", cartRouter)
+  app.use("/api/users", userRouter)
+  app.use("/api/sessions", sessionRouter)
+    
+  app.listen(process.env.PORT, () => {
     console.log('Server listening on port 8083');
   });
 })();
