@@ -4,25 +4,32 @@ const product = [];
 const pm = new ProductManager();
 
 export const list = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit, 10) || 10
+    const page = parseInt(req.query.page, 10) || 1
+    const result = await pm.getProducts(limit, page)
 
-  const limit = parseInt(req.query.limit, 10) || 10
-  const page = parseInt(req.query.page, 10) || 1
+    res.send({
+      status: 'success',
+      payload: result.docs,
+      totalPages: result.totalPages,
+      prevPage: result.hasPrevPage ? result.prevPage : null,
+      nextPage: result.hasNextPage ? result.nextPage : null,
+      page: result.page,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevLink: result.hasPrevPage ? null : false,
+      nextLink: result.hasNextPage ? null : false,
+    });
+  }
+  catch (error) {
+    res.status(500).send({ error: error.message })
+  }
 
 
-  const result = await pm.getProducts(limit, page)
 
-  res.send({
-    status: 'success',
-    payload: result.docs,
-    totalPages: result.totalPages,
-    prevPage: result.hasPrevPage ? result.prevPage : null,
-    nextPage: result.hasNextPage ? result.nextPage : null,
-    page: result.page,
-    hasPrevPage: result.hasPrevPage,
-    hasNextPage: result.hasNextPage,
-    prevLink: result.hasPrevPage ? null : false,
-    nextLink: result.hasNextPage ? null : false,
-  });
+
+
 };
 
 export const getOne = async (req, res) => {

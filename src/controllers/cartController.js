@@ -9,6 +9,7 @@ export const getCart = async (req, res) => {
   const currentCart = await cm.getCart(cid);
   if (!currentCart) {
     res.send({ status: 'Error', message: 'Cart Not Found' })
+  
   } else {
     res.send({ status: 'Success', currentCart })
   }
@@ -33,7 +34,8 @@ export const addProduct = async (req, res) => {
     if (!searchCart) {
       res.send({ status: 'Error', message: 'Cart Not Found' })
 
-    } else if (!searchProduct) {
+    } else 
+      if (!searchProduct) {
       res.send({ status: 'Error', message: 'Product Not Found' })
 
     } else {

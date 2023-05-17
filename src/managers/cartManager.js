@@ -6,8 +6,10 @@ class CartManager {
   }
 
   async getCart(id) {
-    
-    return this.cartDao.getOne(id);
+
+    const currentCart = this.cartDao.getOne(id);
+ 
+   return this.cartDao.getOne(id);  
   }
 
   async createCart() {

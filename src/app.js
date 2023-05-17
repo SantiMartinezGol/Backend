@@ -1,16 +1,25 @@
-import express from 'express';
-import { __dirname } from './utils.js';
-import handlebars from 'express-handlebars';
-import { Server } from 'socket.io';
-import cartRouter from './routes/cartRouter.js';
-import productRouter from './routes/productRouter.js';
-import productList from './routes/productList.js';
-import mongoose from 'mongoose';
 import dotenv from "dotenv";
-
 dotenv.config();
 
-const app = express();
+import express from 'express';
+import session from 'express-session';
+import mongoose from 'mongoose';
+import mongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
+
+import { __dirname } from './utils.js';
+//import handlebars from 'express-handlebars';
+//import { Server } from 'socket.io';
+//import productList from './routes/productList.js';
+import sessionRouter from "./routes/sessionRouter.js";
+import userRouter from "./routes/userRouter.js";
+import cartRouter from './routes/cartRouter.js';
+import productRouter from './routes/productRouter.js';
+
+
+//const app = express();
 const PORT = 8083;
 
 void (async () => {
@@ -25,8 +34,24 @@ void (async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use("/api/products", productRouter)
   app.use("/api/carts", cartRouter)
-  app.use("/", productList)
-  app.use("/api/realtimeproducts", productList)
+  app.use("/api/users", userRouter)
+  app.use("/api/sessions", sessionRouter)
+  //app.use("/", productList)
+  //app.use("/api/realtimeproducts", productList)
+  app.use(cookieParser());
+  app.use(session({
+      store: mongoStore.create({
+        mongoUrl: process.env.MONGO_DB_URI,
+        ttl: 10,
+      }),
+      secret: 'CoderS3cR3tC0D3',
+      resave: false,
+      saveUninitialized: false
+    }));
+
+    initializePassport();
+    app.use(passport.initialize());
+    app.use(passport.session());
 
   app.listen(PORT, () => {
     console.log('Server listening on port 8083');
