@@ -1,6 +1,7 @@
 import UserMongooseDao from "../daos/userMongooseDao.js";
 import UserManager from "./userManager.js";
-import { createHash, isValidPassword } from "../utils/index.js";
+import { createHash, isValidPassword, generateToken } from "../utils/index.js";
+import emailValidation from "../validations/email.validation.js";
 
 class SessionManager {
     constructor() {
@@ -9,6 +10,8 @@ class SessionManager {
 
     async login(data) {
         const { email, password } = data;
+        await emailValidation.parseAsync(data)
+
         if (!email || !password) {
             throw new Error('Email o Password invalid format.');
         }
@@ -16,19 +19,12 @@ class SessionManager {
         const isHashedPassword = await isValidPassword(password, user.password);
 
         if (!isHashedPassword) {
-            throw new Error( 'Login failed, invalid password.');
+            throw new Error('Login failed, invalid password.');
         };
-        return user;
-    }
 
-    async logout() {
-        req.session.destroy(err => {
-            if (!err) {
-                return
-            }
-            throw new Error( 'Logout error');
-        });
-
+        const dto = { ...user, password: undefined }
+        const accessToken = await generateToken(dto);
+        return accessToken;
     }
 
     async signup(data) {
@@ -42,13 +38,13 @@ class SessionManager {
     };
 
     async forgetPassword(data) {
-        const { email, password } = data;      
+        const { email, password } = data;
         const dto = {
-          email,
-          password: await createHash(password, 10)
+            email,
+            password: await createHash(password, 10)
         };
         const user = await this.userDao.getOneByEmail(email);
-     };
+    };
 };
 
 export default SessionManager

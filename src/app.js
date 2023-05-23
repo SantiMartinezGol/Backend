@@ -17,8 +17,7 @@ import sessionRouter from "./routes/sessionRouter.js";
 import userRouter from "./routes/userRouter.js";
 import cartRouter from './routes/cartRouter.js';
 import productRouter from './routes/productRouter.js';
-
-
+import errorHandler from './middlewares/errorHandler.js';
 
 void (async () => {
   await mongoose.connect(process.env.MONGO_DB_URI,{
@@ -51,6 +50,7 @@ void (async () => {
   app.use("/api/carts", cartRouter)
   app.use("/api/users", userRouter)
   app.use("/api/sessions", sessionRouter)
+  app.use(errorHandler);
     
   app.listen(process.env.PORT, () => {
     console.log('Server listening on port 8083');

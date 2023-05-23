@@ -59,7 +59,6 @@ export const update = async (req, res) => {
   const producto = req.body;
   const id = req.params.id;
   const product = await pm.updateProduct(id, producto);
-  console.log(product);
   res.send({ status: 'success', product });
 }
 
