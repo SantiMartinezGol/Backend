@@ -1,8 +1,9 @@
 import UserMongooseDao from "../daos/userMongooseDao.js"
-import idValidation from "../validations/idValidation.js"
+import idValidation from "../validations/shared/idValidation.js"
 import paginateValidation from "../validations/paginateValidation.js"
-import userValidation from "../validations/userValidation.js"
-import emailValidation from "../validations/email.validation.js"
+import userCreateValidation from "../validations/user/userCreateValidation.js"
+import loginValidation from "../validations/session/loginValidation.js"
+import userUpdateValidation from "../validations/user/userUpdateValidation.js"
 class UserManager {
     constructor() {
         this.userDao = new UserMongooseDao();
@@ -19,7 +20,7 @@ class UserManager {
     }
 
     async getOneByEmail(email) {
-        await email.Validation.parseAsync(email);
+        await loginValidation.parseAsync(email);
         return this.userDao.getOneByEmail(email);
     }
 
@@ -31,7 +32,7 @@ class UserManager {
     }
 
     async create(data) {
-        await userValidation.parseAsync(data);
+        await userCreateValidation.parseAsync(data);
         const user = await this.userDao.create(data);
         if(!user){
             throw new Error ("Unexpected error, no user created")
@@ -40,8 +41,10 @@ class UserManager {
     }
 
     async updateOne(id, data) {
-        await idValidation.parseAsync(id)
-        await userValidation.parseAsync(data);
+        console.log("manager");
+        console.log({...data, id});
+        console.log(id,data);
+        await userUpdateValidation.parseAsync({...data, id});
         return this.userDao.updateOne(id, data);
     }
 

@@ -6,7 +6,7 @@ const productRouter = Router();
 productRouter.get('/', list);
 productRouter.get('/:pid', getOne );
 productRouter.post('/', save );
-productRouter.put('/:id', update );
-productRouter.delete('/:id', deleteOne);
+productRouter.put('/:pid', update );
+productRouter.delete('/:pid', deleteOne);
 
 export default productRouter;

@@ -1,5 +1,5 @@
 import UserManager from "../managers/userManager.js";
-import { createHash } from "../utils/index.js";
+import { createHash } from "../shared/index.js";
 
 export const list = async (req, res, next) => {
     try {
@@ -46,7 +46,8 @@ export const save = async (req, res, next) => {
 export const update = async (req, res, next) => {
     try {
         const manager = new UserManager();
-        const result = await manager.updateOne(req.params, req.body);
+        const {id} = req.params
+        const result = await manager.updateOne(id, req.body);
 
         res.send({ status: 'success', result, message: 'User updated.' })
     }

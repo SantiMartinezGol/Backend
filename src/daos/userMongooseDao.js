@@ -12,7 +12,9 @@ class UserMongooseDao
       firstName: document.firstName,
       lastName: document.lastName,
       email: document.email,
-      age: document.age
+      age: document.age,
+      isAdmin:document.isAdmin,
+      role: document.role
     }));
 
     return userDocuments;
@@ -21,7 +23,7 @@ class UserMongooseDao
   async getOne(id)
   {
     const userDocument = await userSchema.findOne({ _id: id });
-        if(!userDocument)
+    if(!userDocument)
     {
       throw new Error('User dont exist.');
     }
@@ -32,7 +34,9 @@ class UserMongooseDao
         lastName: userDocument?.lastName,
         email: userDocument?.email,
         age: userDocument?.age,
-        password: userDocument?.password
+        password: userDocument?.password,
+        isAdmin: userDocument?.isAdmin,
+        role: userDocument?.role
     }
   }
 
@@ -48,7 +52,10 @@ class UserMongooseDao
         lastName: userDocument?.lastName,
         email: userDocument?.email,
         age: userDocument?.age,
-        password: userDocument?.password
+        password: userDocument?.password,
+        isAdmin: userDocument?.isAdmin,
+        role: userDocument?.role
+
     }
   }
 
@@ -63,11 +70,15 @@ class UserMongooseDao
         email: userDocument.email,
         age: userDocument.age,
         password: userDocument.password,
+        isAdmin: userDocument.isAdmin
     }
   }
 
   async updateOne(id, data)
-  {
+   {
+  console.log(id);
+  console.log(data);
+ 
     const userDocument = await userSchema.findOneAndUpdate({ _id: id }, data, { new: true});
 
     if(!userDocument)
@@ -80,7 +91,9 @@ class UserMongooseDao
         firstName: userDocument.firstName,
         lastName: userDocument.lastName,
         email: userDocument.email,
-        age: userDocument.age
+        age: userDocument.age,
+        isAdmin: userDocument.isAdmin,
+   
     }
   }
 

@@ -1,7 +1,7 @@
 import passport from 'passport';
 import local from 'passport-local';
 import UserManager from "../managers/userManager.js";
-import {createHash, isValidPassword} from "../utils/index.js";
+import {createHash, isValidPassword} from "../shared/index.js";
 
 const LocalStrategy = local.Strategy;
 

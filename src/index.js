@@ -18,6 +18,7 @@ import userRouter from "./routes/userRouter.js";
 import cartRouter from './routes/cartRouter.js';
 import productRouter from './routes/productRouter.js';
 import errorHandler from './middlewares/errorHandler.js';
+import roleRouter from "./routes/roleRouter.js";
 
 void (async () => {
   await mongoose.connect(process.env.MONGO_DB_URI,{
@@ -34,6 +35,7 @@ void (async () => {
   //app.use("/api/realtimeproducts", productList)
   app.use(cookieParser());
   app.use(session({
+    
       store: mongoStore.create({
         mongoUrl: process.env.MONGO_DB_URI,
         ttl: 10,
@@ -50,6 +52,7 @@ void (async () => {
   app.use("/api/carts", cartRouter)
   app.use("/api/users", userRouter)
   app.use("/api/sessions", sessionRouter)
+  app.use("/api/roles", roleRouter)
   app.use(errorHandler);
     
   app.listen(process.env.PORT, () => {

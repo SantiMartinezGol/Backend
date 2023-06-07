@@ -1,7 +1,7 @@
 import UserMongooseDao from "../daos/userMongooseDao.js";
 import UserManager from "./userManager.js";
-import { createHash, isValidPassword, generateToken } from "../utils/index.js";
-import emailValidation from "../validations/email.validation.js";
+import { createHash, isValidPassword, generateToken } from "../shared/index.js";
+import loginValidation from "../validations/session/loginValidation.js";
 
 class SessionManager {
     constructor() {
@@ -10,7 +10,7 @@ class SessionManager {
 
     async login(data) {
         const { email, password } = data;
-        await emailValidation.parseAsync(data)
+        await loginValidation.parseAsync(data)
 
         if (!email || !password) {
             throw new Error('Email o Password invalid format.');
