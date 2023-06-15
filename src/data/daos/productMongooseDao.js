@@ -7,7 +7,6 @@ class ProductMongooseDao {
   }
 
   async getOne(id) {
-
     const productDocument = await productSchema.findOne({ _id: id });
     if (!productDocument) {
       throw new Error('Product Not Found!');

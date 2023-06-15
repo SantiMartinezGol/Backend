@@ -20,7 +20,6 @@ class RoleMongooseDao {
         if (!roleDocument) {
             throw new Error('Role dont exist.');
         }
-
         return {
             id: roleDocument?._id,
             name: roleDocument?.name,

@@ -15,4 +15,3 @@ cartSchema.pre('findOne', function () {
 });
 
 export default mongoose.model(cartCollection, cartSchema);
-

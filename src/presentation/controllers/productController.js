@@ -1,7 +1,5 @@
 import ProductManager from "../../domain/managers/productManager.js";
 
-const product = [];
-
 export const list = async (req, res, next) => {
   try 
   {
@@ -57,13 +55,15 @@ export const save = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  try {
+  try 
+  {
     const pm = new ProductManager();
     const id  = req.params.pid
     const product = await pm.updateProduct(id, req.body);
     res.send({ status: 'success', product, message: 'Product updated.' });
   }
-  catch (e) {
+  catch (e) 
+  {
     next(e)
   }
 }
