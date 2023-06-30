@@ -1,0 +1,78 @@
+[
+  {
+    "id": "6462ab5b1c1c3abf626271f8",
+    "firstName": "Jorge",
+    "lastName": "Martinez",
+    "email": "funiv20054@yahoo.com.ar",
+    "age": 60,
+    "isAdmin": true,
+    "password": "$2b$10$yKYbU6Vw/54hUUcbJga9Y.T432/mmp8.gKyrbeDPtU/roT7zrs/tW"
+  },
+  {
+    "id": "647ed77604802513324cf2f8",
+    "firstName": "Jorge",
+    "lastName": "Lopez",
+    "email": "jorgelopez12mail.com",
+    "age": 60,
+    "isAdmin": false,
+    "password": "hola123"
+  },
+  {
+    "id": "647eda992ceb53cfe40e6a2f",
+    "firstName": "Maria",
+    "lastName": "Saavedra",
+    "email": "mariasaavedra4774@gmail.com",
+    "age": 50,
+    "isAdmin": false,
+    "password": "$2b$10$0vz9mENr18IdvgkhvvOeDun39P0pL1m63xqT7Wtza5qfOUDZKJDk.",
+    "role": {
+      "_id": "649d27f5b67f5afe49c29ee5",
+      "name": "Client",
+      "permissions": [
+        "manageCart"
+      ],
+      "__v": 0
+    },
+    "cart": "649d3db183da9883fe4fa00c"
+  },
+  {
+    "id": "647f89ab978170a1c476fc5d",
+    "firstName": "Jose",
+    "lastName": "Garcia",
+    "email": "josegarcia6809@gmail.com",
+    "age": 22,
+    "isAdmin": false,
+    "password": "$2b$10$WrV3trCvxTqS22b.iXGXU.X8pmRdKqPfy8o6Qfisi5YXI3sPqa7wC",
+    "role": {
+      "_id": "647e5fa5514d6131bff4a325",
+      "name": "Client",
+      "permissions": [
+        "saveRole",
+        "updateRole",
+        "createRole",
+        "getRoles",
+        "getRole",
+        "deleteRole"
+      ],
+      "__v": 0
+    }
+  },
+  {
+    "id": "649a77e21fc2900ff4117de6",
+    "firstName": "Jorgito",
+    "lastName": "Perecito",
+    "email": "abcd1234@gmail.com",
+    "age": 28,
+    "isAdmin": false,
+    "password": "12345678"
+  },
+  {
+    "id": "649d2746e500d5694f9a58c5",
+    "firstName": "Santiago",
+    "lastName": "Martinez",
+    "email": "santimartinez0580@gmail.com",
+    "age": 24,
+    "isAdmin": true,
+    "password": "$2b$10$OuYgEZ390LwmsCH6w0OD6eoKksp1.VHuurXL8qOJ7s8K/KbvII746"
+  }
+]

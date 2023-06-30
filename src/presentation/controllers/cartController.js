@@ -121,4 +121,17 @@ export const resetCart = async (req, res, next) => {
   }
 }
 
+export const generateTicket = async (req, res, next) => {
+  try 
+  {
+    // id ok
+    const cm = new CartManager();
+    const newTicket = await cm.generateTicket(req.params.cid, req.user.email);
+    res.send({ status: 'Success', newTicket })
+  }
+  catch (e) 
+  {
+    next(e)
+  }
+}
 

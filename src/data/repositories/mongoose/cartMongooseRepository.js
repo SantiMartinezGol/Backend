@@ -1,31 +1,36 @@
-import cartSchema from '../models/cartSchema.js';
+import cartSchema from '../../models/mongoose/cartSchema.js';
 
-class CartMongooseDao {
+class CartMongooseRepository {
 
   async getOne(id) {
+    // id ok
     const cartDocument = await cartSchema.findOne({ _id: id })
+    
     if (!cartDocument) {
       throw new Error('Cart Not Found!')
     }
+
     return {
       id: cartDocument._id,
       products: cartDocument.products.map((prod) => ({
-        id: prod._id,
-        title: prod.title,
-        description: prod.description,
-        code: prod.code,
-        price: prod.price,
-        stock: prod.stock,
-        category: prod.category,
-        quantity: prod.pqty
+        pid: prod._id._id,
+        title: prod._id.title,
+        //description: prod._id.description,
+        code: prod._id.code,
+        price: prod._id.price,
+        stock: prod._id.stock,
+        //category: prod._id.category,
+        //status: prod._id.status,
+        pqty: prod.pqty
       }))
     };
-  }
+  };
 
   async create() {
     const cartDocument = await cartSchema.create({ products: [] });
     return {
       cid: cartDocument._id,
+     
       products: []
     };
   }
@@ -79,7 +84,7 @@ class CartMongooseDao {
       { new: true }
     );
     return {
-        cid: cartDocument._id,
+      cid: cartDocument._id,
     }
   }
 
@@ -117,4 +122,4 @@ class CartMongooseDao {
   }
 }
 
-export default CartMongooseDao;
+export default CartMongooseRepository;

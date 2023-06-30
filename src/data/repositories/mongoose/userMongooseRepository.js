@@ -1,6 +1,6 @@
-import userSchema from "../models/userSchema.js";
+import userSchema from "../../models/mongoose/userSchema.js";
 
-class UserMongooseDao
+class UserMongooseRepository
 {
   async paginate(criteria)
   {
@@ -14,8 +14,9 @@ class UserMongooseDao
       email: document.email,
       age: document.age,
       isAdmin:document.isAdmin,
-      role: document.role
-    }));
+      role: document.role,
+      cart: document.cart
+    })); 
 
     return userDocuments;
   }
@@ -23,6 +24,7 @@ class UserMongooseDao
   async getOne(id)
   {
     const userDocument = await userSchema.findOne({ _id: id });
+
     if(!userDocument)
     {
       throw new Error('User dont exist.');
@@ -34,7 +36,6 @@ class UserMongooseDao
         lastName: userDocument?.lastName,
         email: userDocument?.email,
         age: userDocument?.age,
-        password: userDocument?.password,
         isAdmin: userDocument?.isAdmin,
         role: userDocument?.role
     }
@@ -43,8 +44,9 @@ class UserMongooseDao
   async getOneByEmail(email) {
 
     const userDocument = await userSchema.findOne({ email });
+    
     if(!userDocument){
-      throw new Error("User dont exist");
+      throw new Error("User Not Found");
     }
     return {
         id: userDocument?._id,
@@ -69,7 +71,6 @@ class UserMongooseDao
         lastName: userDocument.lastName,
         email: userDocument.email,
         age: userDocument.age,
-        password: userDocument.password,
         isAdmin: userDocument.isAdmin
     }
   }
@@ -100,4 +101,4 @@ class UserMongooseDao
   }
 }
 
-export default UserMongooseDao;
+export default UserMongooseRepository;

@@ -48,8 +48,12 @@ export const save = async (req, res, next) => {
 export const update = async (req, res, next) => {
     try {
         const manager = new UserManager();
+        const dto = {
+            ...req.body,
+            password: await createHash(req.body.password, 10)
+        }
         const {id} = req.params
-        const result = await manager.updateOne(id, req.body);
+        const result = await manager.updateOne(id, dto);
 
         res.send({ status: 'success', result, message: 'User updated.' })
     }

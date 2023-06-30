@@ -2,9 +2,10 @@ import SessionManager from "../../domain/managers/sessionManager.js";
 
 export const login = async (req, res, next) => {
   try {
+    
     const manager = new SessionManager();
     const accessToken = await manager.login(req.body)
-
+    
     if (accessToken) {
       res.send({ message: 'Login success!', accessToken });
     }
@@ -21,7 +22,6 @@ export const current = async (req, res, next) => {
     next(e)
   }
 };
-
 
 export const signup = async (req, res, next) => {
   try {

@@ -1,0 +1,89 @@
+[
+    {
+      "_id": "6453b718db56ed5182f0fe49",
+      "title": "Producto12",
+      "description": "Prueba",
+      "code": "A12",
+      "price": 445,
+      "stock": 28,
+      "category": "Varios",
+      "status": true,
+      "__v": 0
+    },
+    {
+      "_id": "6453b86fc5d57bf2cc4f40ab",
+      "title": "Producto2",
+      "description": "Prueba",
+      "code": "A2",
+      "price": 105,
+      "stock": 0,
+      "category": "Varios",
+      "status": true,
+      "__v": 0
+    },
+    {
+      "_id": "64540eede5b652784ded6625",
+      "title": "Producto3",
+      "description": "Prueba",
+      "code": "A3",
+      "price": 100,
+      "stock": 1,
+      "category": "Varios",
+      "status": true,
+      "__v": 0
+    },
+    {
+      "_id": "645415d240edd52b835aa874",
+      "title": "Producto5",
+      "description": "Prueba",
+      "code": "A5",
+      "price": 500,
+      "stock": 0,
+      "category": "Varios",
+      "status": true,
+      "__v": 0
+    },
+    {
+      "_id": "64545985537066dcf051a853",
+      "title": "Producto6",
+      "description": "Prueba",
+      "code": "A6",
+      "price": 280,
+      "stock": 14,
+      "category": "Varios",
+      "status": true,
+      "__v": 0
+    },
+    {
+      "_id": "645502c38e7e7dae7d12665e",
+      "title": "Producto7",
+      "description": "Prueba",
+      "code": "A7",
+      "price": 700,
+      "stock": 7,
+      "category": "Varios",
+      "status": true,
+      "__v": 0
+    },
+    {
+      "_id": "6455de17f0d3d6f91d2f3881",
+      "title": "Producto8",
+      "description": "Prueba",
+      "code": "A8",
+      "price": 800,
+      "stock": 40,
+      "category": "Varios",
+      "status": true,
+      "__v": 0
+    },
+    {
+      "_id": "6455de4cf0d3d6f91d2f3885",
+      "title": "Producto10",
+      "description": "Prueba",
+      "code": "A10",
+      "price": 120,
+      "stock": 20,
+      "category": "Relojeria",
+      "__v": 0
+    }
+]

@@ -1,29 +1,34 @@
-import UserMongooseDao from "../../data/daos/userMongooseDao.js";
 import UserManager from "./userManager.js";
 import { createHash, isValidPassword, generateToken } from "../../shared/index.js";
 import loginValidation from "../../domain/validations/session/loginValidation.js";
+import container from "../../container.js"
 
 class SessionManager {
     constructor() {
-        this.userDao = new UserMongooseDao();
+        this.userRepository = container.resolve("UserRepository") ;
     }
 
     async login(data) {
+       
         const { email, password } = data;
-        await loginValidation.parseAsync(data)
-
-        if (!email || !password) {
-            throw new Error('Email o Password invalid format.');
-        }
-        const user = await this.userDao.getOneByEmail(email);
+        await loginValidation.parseAsync(data); 
+               
+        const user = await this.userRepository.getOneByEmail(email);
+      
+      /*  if(!user)
+        {
+            throw new Error ("User Not Found")
+        } */
+        
         const isHashedPassword = await isValidPassword(password, user.password);
-
+   
         if (!isHashedPassword) {
             throw new Error('Login failed, invalid password.');
         };
 
         const dto = { ...user, password: undefined }
         const accessToken = await generateToken(dto);
+        
         return accessToken;
     }
 
@@ -43,7 +48,7 @@ class SessionManager {
             email,
             password: await createHash(password, 10)
         };
-        const user = await this.userDao.getOneByEmail(email);
+        const user = await this.userRepository.getOneByEmail(email);
     };
 };
 

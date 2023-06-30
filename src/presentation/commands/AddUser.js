@@ -3,6 +3,9 @@ import UserManager from '../../domain/managers/userManager.js';
 
 const AddUserCommand = new Command('addUser');
 
+//Command example: ejecutar en terminal
+//node src/command addUser --email "abcd1234@gmail.com" --firstName "Santiago" --lastName "Martinez" --password "12345678" --age 28 --isAdmin true
+
 AddUserCommand
   .version('0.0.1')
   .description('Add user')

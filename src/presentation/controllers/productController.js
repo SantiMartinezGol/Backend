@@ -8,7 +8,7 @@ export const list = async (req, res, next) => {
 
     const pm = new ProductManager();
     const result = await pm.getProducts(req.query)
-
+    
     res.send({
       status: 'success',
       payload: result.docs,
@@ -20,7 +20,9 @@ export const list = async (req, res, next) => {
       hasNextPage: result.hasNextPage,
       prevLink: result.hasPrevPage ? null : false,
       nextLink: result.hasNextPage ? null : false,
-    });
+    }
+    //.render('index', {title: 'Lista de Productos'})
+    );
   }
   catch (e) 
   {

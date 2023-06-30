@@ -1,6 +1,6 @@
-import roleSchema from "../models/roleSchema.js";
+import roleSchema from "../../models/mongoose/roleSchema.js";
 
-class RoleMongooseDao {
+class RoleMongooseRepository {
     async paginate(criteria) {
         const { limit, page } = criteria;
         const roleDocuments = await roleSchema.paginate({}, { limit, page });
@@ -41,7 +41,7 @@ class RoleMongooseDao {
         const roleDocument = await roleSchema.findOneAndUpdate({ _id: id }, data, { new: true });
 
         if (!roleDocument) {
-            throw new Error('Role dont exist.');
+            throw new Error('Role Not Found!');
         }
 
         return {
@@ -56,4 +56,4 @@ class RoleMongooseDao {
     }
 }
 
-export default RoleMongooseDao;
+export default RoleMongooseRepository;

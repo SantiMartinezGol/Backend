@@ -1,6 +1,7 @@
-import productSchema from '../models/productSchema.js';
+import productSchema from '../../models/mongoose/productSchema.js'
 
-class ProductMongooseDao {
+class ProductMongooseRepository {
+  
   async find(limit, page) {
     const productsDocument = await productSchema.paginate({ status: true }, { limit, page });
     return productsDocument
@@ -57,4 +58,4 @@ class ProductMongooseDao {
     return
   }
 }
-export default ProductMongooseDao;
+export default ProductMongooseRepository;

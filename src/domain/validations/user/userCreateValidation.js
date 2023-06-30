@@ -6,7 +6,7 @@ const userCreateValidation = z.object({
   lastName: z.string().min(3).max(15),
   email: z.string().email(),
   age: z.number(),
-  isAdmin: z.boolean(),
+  isAdmin: z.boolean().default(false),
   password: z.string()
 });
 

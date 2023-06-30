@@ -1,28 +1,33 @@
-import RoleMongooseDao from "../../data/daos/roleMongooseDao.js";
+import container from "../../container.js"
+import idValidation from "../validations/shared/idValidation.js";
 
 class RoleManager {
     constructor() {
-        this.roleDao = new RoleMongooseDao();
+        this.roleRepository = container.resolve("RoleRepository");
+
     }
 
     async paginate(criteria) {
-        return this.roleDao.paginate(criteria);
+        return this.roleRepository.paginate(criteria);
     }
 
     async getOne(id) {
-        return this.roleDao.getOne(id);
+        await idValidation.parseAsync({id: id});
+        return this.roleRepository.getOne(id);
     }
 
     async create(data) {
-        return await this.roleDao.create(data);
+        return await this.roleRepository.create(data);
     }
 
     async updateOne(id, data) {
-        return this.roleDao.updateOne(id, data);
+        await idValidation.parseAsync({id: id});
+        return this.roleRepository.updateOne(id, data);
     }
 
     async deleteOne(id) {
-        return this.roleDao.deleteOne(id);
+        await idValidation.parseAsync({id: id});
+        return this.roleRepository.deleteOne(id);
     }
 }
 

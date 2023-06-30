@@ -1,4 +1,5 @@
 import express from 'express';
+import handlebars from 'express-handlebars';
 import cookieParser from "cookie-parser";
 
 import { __dirname } from '../../utils.js';
@@ -12,9 +13,17 @@ import errorHandler from "../../presentation/middlewares/errorHandler.js";
 class AppExpress {
   init() {
     this.app = express();
+    
+    this.app.engine('handlebars', handlebars.engine());
+
+    this.app.set('views', __dirname + '/views');
+    this.app.set('view engine', 'handlebars');
+    this.app.use(express.static(__dirname + '/public'));
+
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+  
   }
 
   build() {

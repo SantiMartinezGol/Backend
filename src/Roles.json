@@ -1,0 +1,57 @@
+[
+    {
+        "id": "647e5fa5514d6131bff4a325",
+        "name": "Client",
+        "permissions": [
+            "saveRole",
+            "updateRole",
+            "createRole",
+            "getRoles",
+            "getRole",
+            "deleteRole"
+        ]
+    },
+    {
+        "id": "647eeca83867c5161f866c7b",
+        "name": "Client",
+        "permissions": [
+            "saveRole",
+            "updateRole",
+            "createRole",
+            "getRoles",
+            "getRole",
+            "deleteRole"
+        ]
+    },
+    {
+        "id": "647f86f9978170a1c476fc3d",
+        "name": "Client",
+        "permissions": [
+            "saveRole",
+            "updateRole",
+            "createRole",
+            "getRoles",
+            "getRole",
+            "deleteRole"
+        ]
+    },
+    {
+        "id": "649bc0281c5b084551236f27",
+        "name": "Client",
+        "permissions": [
+            "saveRole",
+            "updateRole",
+            "createRole",
+            "getRoles",
+            "getRole",
+            "deleteRole"
+        ]
+    },
+    {
+        "id": "649d27f5b67f5afe49c29ee5",
+        "name": "Client",
+        "permissions": [
+            "manageCart"
+        ]
+    }
+]
