@@ -5,15 +5,15 @@ import authorization from '../middlewares/authorization.js';
 import authAdmin from '../middlewares/authAdmin.js';
 
 const cartRouter = Router();
+//authAdmin,
 
-cartRouter.get('/:cid', auth, authAdmin, authorization("manageCart"), getCart);
-cartRouter.post('/', auth, authAdmin, authorization("manageCart"), addCart);
-cartRouter.post('/:cid/product/:pid', auth, authAdmin, authorization("manageCart"), addProduct);
-cartRouter.post('/:cid/purchase', auth, authAdmin, authorization("manageCart"), generateTicket);
-cartRouter.delete('/:cid/product/:pid', auth, authAdmin, authorization("manageCart"), deleteProduct);
-cartRouter.put('/:cid', auth, authAdmin, authorization("manageCart"), updateCart);
+cartRouter.get('/:cid', auth,  authorization("manageCart"), getCart);
+cartRouter.post('/', auth,  authorization("manageCart"), addCart);
+cartRouter.post('/:cid/product/:pid', auth, authorization("manageCart"), addProduct);
+cartRouter.post('/:cid/purchase', auth, authorization("manageCart"), generateTicket);
+cartRouter.put('/:cid', auth, authorization("manageCart"), updateCart);
+cartRouter.put('/:cid/product/:pid', auth, authorization("manageCart"), updateProduct);
+cartRouter.delete('/:cid/product/:pid', auth, authorization("manageCart"), deleteProduct);
+cartRouter.delete('/:cid', auth, authorization("manageCart"), resetCart)  
 
-cartRouter.put('/:cid/product/:pid', auth, authAdmin, authorization("manageCart"), updateProduct);
-cartRouter.delete('/:cid', auth, authAdmin, authorization("manageCart"), resetCart) 
- 
 export default cartRouter;

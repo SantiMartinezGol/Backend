@@ -1,4 +1,3 @@
-
 import UserManager from "../../domain/managers/userManager.js";
 import { createHash } from "../../shared/index.js";
 
@@ -29,16 +28,15 @@ export const getOne = async (req, res, next) => {
 
 export const save = async (req, res, next) => {
     try {
-        const manager = new UserManager();
+        
         const dto = {
             ...req.body,
             password: await createHash(req.body.password, 10)
         }
-
+        const manager = new UserManager();
         const user = await manager.create(dto);
 
-
-        res.send({ status: 'success', user, message: 'User created.' })
+        res.status(201).send({ status: 'success', user, message: 'User created.' })
     }
     catch (e) {
         next(e);
@@ -48,14 +46,9 @@ export const save = async (req, res, next) => {
 export const update = async (req, res, next) => {
     try {
         const manager = new UserManager();
-        const dto = {
-            ...req.body,
-            password: await createHash(req.body.password, 10)
-        }
-        const {id} = req.params
-        const result = await manager.updateOne(id, dto);
+        const user = await manager.updateOne(req.params.id, req.body);
 
-        res.send({ status: 'success', result, message: 'User updated.' })
+        res.send({ status: 'success', user, message: 'User updated.' })
     }
     catch (e) {
         next(e);
@@ -66,6 +59,7 @@ export const deleteOne = async (req, res, next) => {
     try {
         const manager = new UserManager();
         await manager.deleteOne(req.params);
+
         res.send({ status: 'success', message: 'User deleted.' })
     }
     catch (e) {

@@ -19,33 +19,39 @@ class ProductManager {
   }
 
   async getProductById(data) {
-    const id = data.pid
-    await idValidation.parseAsync({id: id});
    
-    return await this.productRepository.getOne(id);
+    const id = data.pid;
+    await idValidation.parseAsync({id: id});
+    const product = await this.productRepository.getOne(id);
+    if (!product) {
+      throw new Error('Product Not Found!');
+    }
+    return product
   }
 
   async addProduct(data) {
-    await addProductValidation.parseAsync(data)
+    await addProductValidation.parseAsync(data);
     const product = await this.productRepository.create(data);
+
     return product;
   }
 
   async updateProduct(id, data) {
     await updateProductValidation.parseAsync({...data, id});
-    await this.productRepository.getOne(id)
+    await this.productRepository.getOne(id);
+
     return this.productRepository.updateOne(id, data);   
   }
 
   async deleteProduct(data) {
     await idValidation.parseAsync({id: data.pid});
-    const id = data.pid
+    const id = data.pid;
     const productToDelete = await this.productRepository.getOne(id);
-
     if(!productToDelete)
     {
       throw new Error('Product Not Found!')
     }
+
     return this.productRepository.deleteOne(id);
   }
 }

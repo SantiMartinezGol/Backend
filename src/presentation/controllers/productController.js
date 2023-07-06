@@ -5,24 +5,13 @@ export const list = async (req, res, next) => {
   {
     const limit = parseInt(req.query.limit, 10) || 10
     const page = parseInt(req.query.page, 10) || 1
-
-    const pm = new ProductManager();
-    const result = await pm.getProducts(req.query)
+    const data = {limit,page}
     
-    res.send({
-      status: 'success',
-      payload: result.docs,
-      totalPages: result.totalPages,
-      prevPage: result.hasPrevPage ? result.prevPage : null,
-      nextPage: result.hasNextPage ? result.nextPage : null,
-      page: result.page,
-      hasPrevPage: result.hasPrevPage,
-      hasNextPage: result.hasNextPage,
-      prevLink: result.hasPrevPage ? null : false,
-      nextLink: result.hasNextPage ? null : false,
-    }
-    //.render('index', {title: 'Lista de Productos'})
-    );
+    const pm = new ProductManager();
+    const products = await pm.getProducts(data)
+
+    res.send({ status: 'success', products: products.docs, ...products, docs: undefined });
+
   }
   catch (e) 
   {
@@ -35,7 +24,8 @@ export const getOne = async (req, res, next) => {
   {
     const pm = new ProductManager();
     const product = await pm.getProductById(req.params);
-    res.send({ status: 'success', product });
+
+    res.status(200).send ({ status: 'success', product })
   }
   catch (e)
   {
@@ -47,8 +37,9 @@ export const save = async (req, res, next) => {
   try 
   {
     const pm = new ProductManager();
-    const product = await pm.addProduct(req.body)
-    res.send({ status: 'success', product });
+    const product = await pm.addProduct(req.body);
+
+    res.status(201).send ({ status: 'success', product });
   }
   catch (e) 
   {
@@ -60,8 +51,8 @@ export const update = async (req, res, next) => {
   try 
   {
     const pm = new ProductManager();
-    const id  = req.params.pid
-    const product = await pm.updateProduct(id, req.body);
+    const product = await pm.updateProduct(req.params.pid, req.body);
+    
     res.send({ status: 'success', product, message: 'Product updated.' });
   }
   catch (e) 
@@ -74,7 +65,8 @@ export const deleteOne = async (req, res, next) => {
   try 
   {
     const pm = new ProductManager();
-    await pm.deleteProduct(req.params)
+    await pm.deleteProduct(req.params);
+    
     res.send({ status: 'Success', message: 'Product Deleted' })
   }
   catch (e) 

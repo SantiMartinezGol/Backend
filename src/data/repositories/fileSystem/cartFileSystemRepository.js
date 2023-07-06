@@ -1,4 +1,6 @@
 import fs from 'fs';
+import { generateUniqueKey } from "../../../shared/index.js";
+import Cart from '../../../domain/entities/cart.js'
 
 class CartFileSystemRepository {
     #cart = []
@@ -7,177 +9,163 @@ class CartFileSystemRepository {
 
     constructor() {
         this.#cart = [];
-        this.path = `../../../Cart.json`;
-    } 
+        this.path = `./src/Cart.json`;
+    }
 
     async getOne(id) {
-        let cartFile = await fs.promises.readFile(this.path, "utf-8")
-        const carts = JSON.parse(cartFile)
-        const cartDocument = carts.find((element) => element.cid === id);
-        if (!cartDocument) 
-        {
-            throw new Error('Cart Not Found!')
-        }
+        let cartFile = await fs.promises.readFile(this.path, "utf-8");
+        const carts = JSON.parse(cartFile);
 
-        return {
+        const cartDocument = carts.find((c) => c.cid === id);
+     
+        return new Cart ({
             id: cartDocument.cid,
-            products: cartDocument.products.map((prod) => ({
-              id: prod.pid,
-              title: prod.title,
-              description: prod.description,
-              code: prod.code,
-              price: prod.price,
-              stock: prod.stock,
-              category: prod.category,
-              quantity: prod.pqty
+            products: cartDocument.products.map(p => ({
+                id: p.pid,
+                pqty: p.pqty
             }))
-        }
+        });
     }
 
     async create() {
         let cartFile = await fs.promises.readFile(this.path, "utf-8")
-        let newCart = JSON.parse(cartFile)
-        this.lastId = Math.max(...newCart.map(c => c.cid)) + 1;
-        let prod = []
-        cid=  this.lastId
-        newCart.push({
-            "cid": cid,
-            "producto": prod
-        })
-        await fs.promises.writeFile(this.path, JSON.stringify(newCart, null, 2));
-        return {
-          cid: cid,
-          products: []
-        };
+        let carts = JSON.parse(cartFile)
+
+        const size = 24
+        const cid = generateUniqueKey(size);
+
+        const currentCart= ({cid:cid, products:[]})
+
+        carts.push({
+            cid: cid,
+            products: []
+        });
+        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+
+        return new Cart ({
+            id: currentCart.cid,
+            products: currentCart.products.map(p => ({
+                id: p.pid,
+                pqty: p.pqty
+            }))
+        });
     }
 
-    async insert(cid, pid) {         
-        let prod = { "pid": pid, "pqty": 1 }
-        let cartFile = await fs.promises.readFile(this.path, "utf-8")
-        let carts = JSON.parse(cartFile)
-        const currentCart = carts.find(el => el.cid === cid);
-        if (!currentCart) 
-        {
-            throw new Error('Cart Not Found!')
-        }
-        
-        const product = currentCart.producto.find(el => el.pid === pid);
-        if (!product) 
-        {
-            currentCart.producto.push({ "pid": pid, "pqty": 1 })
-        } 
-        else 
-        {
-            let qty = product.pqty + 1
-            currentCart.producto.push({ "pid": pid, "pqty": 1 })
-            cartFile= {...cartFile, currentCart}
-            await fs.promises.writeFile(this.path, JSON.stringify(cartFile, null, 2));
-        }
-        return{
-            id: currentCart.cid,
-            products: currentCart.producto.map(p => ({
-              id: p.pid,
-              pqty: p.pqty
-            }))
+    async insert(cid, pid) {
+        let cartFile = await fs.promises.readFile(this.path, "utf-8");
+        let carts = JSON.parse(cartFile);
 
+        const currentCartIndex = carts.findIndex((el) => el.cid === cid);
+        if (currentCartIndex === -1) 
+        {
+            throw new Error('Cart Not Found!');
         }
-    } 
+        const currentCart = carts[currentCartIndex];
+
+        const productIndex = currentCart.products.findIndex((p) => p.pid === pid);
+        if (productIndex === -1) {
+            currentCart.products.push({ pid, pqty: 1 });
+        } else {
+            currentCart.products[productIndex].pqty++;
+        }
+        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+
+        return new Cart ({
+            id: currentCart.cid,
+            products: currentCart.products.map(p => ({
+                id: p.pid,
+                pqty: p.pqty
+            }))
+        });
+    }
 
     async deleteOne(cid, pid) {
-  
-        let cartFile = await fs.promises.readFile(this.path, "utf-8")
-        let carts = JSON.parse(cartFile)
-        const currentCart = carts.find(el => el.cid === cid);
-        if (!currentCart) 
+        let cartFile = await fs.promises.readFile(this.path, "utf-8");
+        let carts = JSON.parse(cartFile);
+
+        const currentCartIndex = carts.findIndex((el) => el.cid === cid);
+        const currentCart = carts[currentCartIndex];
+
+        const productIndex = currentCart.products.findIndex(p => p.pid === pid);
+        if (productIndex === -1) 
         {
-            throw new Error('Cart Not Found!')
+            throw new Error('Product Not Found!');
         }
-        
-        const product = currentCart.producto.find(el => el.pid === pid);
-        if (!product) 
-        {
-            throw new Error('Product Not Found!')
-        } 
-    
-        currentCart = currentCart.producto.filter(el => el.pid === pid) ;
-        cartFile= {...cartFile, currentCart}
-        await fs.promises.writeFile(this.path, JSON.stringify(cartFile, null, 2))
-        
-        return {
+
+        currentCart.products.splice(productIndex, 1);
+
+        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
+      
+        return new Cart ({
             id: currentCart.cid,
-            products: currentCart.producto.map(p => ({
-              id: p.pid,
-              pqty: p.pqty
+            products: currentCart.products.map(p => ({
+                id: p.pid,
+                pqty: p.pqty
             }))
-        }
+        })
     }
-    
+
     async deleteAll(cid) {
         let cartFile = await fs.promises.readFile(this.path, "utf-8")
         let carts = JSON.parse(cartFile)
-        const currentCart = carts.find(el => el.cid === cid);
-        if (!currentCart) 
-        {
-            throw new Error('Cart Not Found!')
-        }
         
-        currentCart.producto = [];    
-        cartFile= {...cartFile, currentCart};
-        await fs.promises.writeFile(this.path, JSON.stringify(cartFile, null, 2));
-        
-        return{
+        const currentCartIndex = carts.findIndex((el) => el.cid === cid);
+        const currentCart = carts[currentCartIndex];
+        currentCart.products = [];
+
+        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+
+        return {
             cid: currentCart.cid,
         }
     }
 
     async updateAll(cid, products) {
+        let cartFile = await fs.promises.readFile(this.path, "utf-8");
+        let carts = JSON.parse(cartFile);
+
+        const currentCartIndex = carts.findIndex((el) => el.cid === cid);
+        const currentCart = carts[currentCartIndex];
+        currentCart.products = products;
         
-        let cartFile = await fs.promises.readFile(this.path, "utf-8")
-        let carts = JSON.parse(cartFile)
+        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+
+        return new Cart ({
+            id: currentCart.cid,
+            products: currentCart.products.map(p => ({
+                id: p.pid,
+                pqty: p.pqty
+            }))
+        });
+    }
+
+    async updateOne(cid, pid, pqty) {
+        let cartFile = await fs.promises.readFile(this.path, "utf-8");
+        let carts = JSON.parse(cartFile);
+
         const currentCart = carts.find(el => el.cid === cid);
-        if (!currentCart) 
+       
+        const productIndex = currentCart.products.findIndex((el) => el.pid === pid);
+        if (productIndex === -1) 
         {
-            throw new Error('Cart Not Found!')
+            currentCart.products.push({ pid: pid, pqty: pqty });
+        } else { 
+            currentCart.products[productIndex].pqty = pqty;
         }
         
-         
-        currentCart.producto = products
-        cartFile= {...cartFile, currentCart}
-        await fs.promises.writeFile(this.path, JSON.stringify(cartFile, null, 2));
+        const cartIndex = carts.findIndex(c => c.cid === currentCart.cid);
+        carts[cartIndex] = currentCart;
         
-        return{
-            cid: currentCart.cid,
-            products: currentCart.producto.map(p => ({
-              pid: p.pid,
-              pqty: p.pqty
+
+        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+
+        return new Cart ({
+            id: currentCart.cid,
+            products: currentCart.products.map(p => ({
+                id: p.pid,
+                pqty: p.pqty
             }))
-        }        
-    }
-    
-    async updateOne(cid, pid, pqty) {
-        let cartFile = await fs.promises.readFile(this.path, "utf-8")
-        let carts = JSON.parse(cartFile)
-        const currentCart = carts.find(el => el.cid === cid);
-        if (!currentCart) 
-        {
-            throw new Error('Cart Not Found!')
-        }   
-        const product = currentCart.producto.find(el => el.pid === pid);
-        if (!product) 
-        {
-            throw new Error('Product Not Found!')
-        } 
-        currentCart.producto.pqty = pqty;
-        cartFile= {...cartFile, currentCart};
-        await fs.promises.writeFile(this.path, JSON.stringify(cartFile, null, 2));
-        
-        return{
-            cid: currentCart.cid,
-            products: currentCart.producto.map(p => ({
-              pid: p.pid,
-              pqty: p.pqty
-            }))
-        }    
-    }
-}        
+        });
+    } 
+}
 export default CartFileSystemRepository;

@@ -1,41 +1,35 @@
 import cartSchema from '../../models/mongoose/cartSchema.js';
+import Cart from '../../../domain/entities/cart.js'
 
 class CartMongooseRepository {
 
-  async getOne(id) {
-    // id ok
+  async getOne(id) { 
+  
     const cartDocument = await cartSchema.findOne({ _id: id })
-    
-    if (!cartDocument) {
-      throw new Error('Cart Not Found!')
-    }
-
-    return {
-      id: cartDocument._id,
-      products: cartDocument.products.map((prod) => ({
-        pid: prod._id._id,
-        title: prod._id.title,
-        //description: prod._id.description,
-        code: prod._id.code,
-        price: prod._id.price,
-        stock: prod._id.stock,
-        //category: prod._id.category,
-        //status: prod._id.status,
-        pqty: prod.pqty
+       
+    return new Cart ({
+      id: cartDocument._id.toString(),
+      products: cartDocument.products.map(p => ({
+        id: p._id.toString(),
+        pqty: p.pqty
       }))
-    };
+    })
   };
 
   async create() {
     const cartDocument = await cartSchema.create({ products: [] });
-    return {
-      cid: cartDocument._id,
-     
-      products: []
-    };
+    
+    return new Cart ({
+      id: cartDocument._id, 
+      products: cartDocument.products.map(p => ({
+        id: p._id.toString(),
+        pqty: p.pqty
+      }))
+    });
   }
 
   async insert(cid, pid) {
+
     const updateProduct = await cartSchema.findOneAndUpdate(
       { _id: cid, 'products._id': pid },
       { $inc: { 'products.$.pqty': 1 } },
@@ -47,15 +41,16 @@ class CartMongooseRepository {
         { $push: { products: { _id: pid, pqty: 1 } } }
       );
     };
+
     const cartDocument = await cartSchema.findById(cid);
 
-    return {
+    return new Cart  ({
       id: cartDocument._id,
       products: cartDocument.products.map(p => ({
-        id: p._id,
+        id: p._id.toString(),
         pqty: p.pqty
       }))
-    }
+    })
   }
 
   async deleteOne(cid, pid) {
@@ -68,13 +63,13 @@ class CartMongooseRepository {
     if (!cartDocument) {
       throw new Error('Unexpected error!')
     }
-    return {
-      cid: cartDocument._id,
+    return new Cart ({
+      id: cartDocument._id.toString(),
       products: cartDocument.products.map(document => ({
-        pid: document._id,
+        id: document._id.toString(),
         pqty: document.pqty
       }))
-    }
+    })
   }
 
   async deleteAll(cid) {
@@ -84,25 +79,33 @@ class CartMongooseRepository {
       { new: true }
     );
     return {
-      cid: cartDocument._id,
+      id: cartDocument._id.toString(),
     }
   }
 
   async updateAll(cid, products) {
+
+    const transfProducts = products.map((product) => ({
+      _id: product.pid,
+      pqty: product.pqty,
+      }));
+
     const cartDocument = await cartSchema.findOneAndUpdate(
       { _id: cid },
-      { $set: { products: products } },
+      { $set: { products: transfProducts } },
       { new: true }
-    );
-    if (cartDocument) {
-      return cartDocument
-    } else {
-      return
-    }
+    );   
+    return new Cart ({
+      id: cartDocument._id.toString(),
+      products: cartDocument.products.map(document => ({
+        id: document._id.toString(),
+        pqty: document.pqty
+      }))
+    }) 
   }
 
   async updateOne(cid, pid, pqty) {
-
+   
     const cartDocument = await cartSchema.findOneAndUpdate(
       { _id: cid, 'products._id': pid },
       { $set: { 'products.$.pqty': pqty } },
@@ -112,13 +115,14 @@ class CartMongooseRepository {
     if (!cartDocument) {
       throw new Error('Cant Update Cart!')
     }
-    return {
-      cid: cartDocument._id,
+   
+    return new Cart ({
+      id: cartDocument._id.toString(),
       products: cartDocument.products.map(document => ({
-        pid: document._id,
+        id: document._id.toString,
         pqty: document.pqty
       }))
-    }
+    })
   }
 }
 

@@ -1,7 +1,6 @@
-import userManager from "../managers/userManager.js";
+import UserManager from "./userManager.js";
 import idValidation from "../validations/shared/idValidation.js";
 import container from "../../container.js"
-import userEmailValidation from "../validations/user/userEmailValidation.js";
 import ProductManager from "./productManager.js";
 import { generateUniqueKey } from "../../shared/index.js";
 
@@ -12,53 +11,75 @@ class CartManager {
   }
 
   async getCart(id) {
-    // id ok
     await idValidation.parseAsync({ id: id });
-    return this.cartRepository.getOne(id);
+
+    const cartDocument= await this.cartRepository.getOne(id);
+    if (!cartDocument) 
+    {
+        throw new Error('Cart Not Found!')
+    }
+    return cartDocument
   }
 
   async createCart(userId) {
-    const um = new userManager();
+    
+    const um = new UserManager();
     const user = await um.getOne({ id: userId });
+    
     const { id, ...rest } = user;
     const newCart = await this.cartRepository.create();
-    const data = { ...rest, cart: newCart.cid.toString() };
+    
+    const data = { ...rest, cart: newCart.id.toString() };
     await um.updateOne(userId, data);
     
     return newCart;
   }
 
   async addToCart(cid, pid) {
-    await idValidation.parseAsync({ id: cid });
-    await idValidation.parseAsync({ id: pid });
+    const a=await this.getCart(cid);
+    const pm = new ProductManager();
+    const b= await pm.getProductById({ pid: pid });
+
     return this.cartRepository.insert(cid, pid);
   }
 
   async deleteProduct(cid, pid) {
-    await idValidation.parseAsync({ id: cid });
-    await idValidation.parseAsync({ id: pid });
+    await this.getCart(cid);
+    const pm = new ProductManager();
+    await pm.getProductById({pid:pid});
+
     return this.cartRepository.deleteOne(cid, pid);
   }
 
   async deleteAllProducts(cid) {
-    await idValidation.parseAsync({ id: cid });
+    await this.getCart(cid);
+    
     return this.cartRepository.deleteAll(cid);
   }
 
   async updateCart(cid, products) {
-    await idValidation.parseAsync({ id: cid });
+    
+    await this.getCart(cid)
+    const pm = new ProductManager();
+    if (products) {
+      for (const product of products) {
+        const pid = product.pid;
+        const searchProduct = await pm.getProductById({pid:pid});
+      }
+    }
+
     return this.cartRepository.updateAll(cid, products);
   }
 
   async updateProduct(cid, pid, pqty) {
-    await idValidation.parseAsync({ id: cid });
-    await idValidation.parseAsync({ id: pid });
-    return this.cartRepository.updateOne(cid, pid, pqty);
+    await this.getCart(cid);
+    const pm = new ProductManager();
+    await pm.getProductById({pid:pid});
+    const updatedCart= await this.cartRepository.updateOne(cid, pid, pqty);
+    return updatedCart;
   }
 
-  async generateTicket(cid, purchaser) {
-    //cid ok
-  
+  async generateTicket(cid, purchaser) { 
     const cart = await this.getCart(cid);
     const purchased = [];
     let amount = 0;
@@ -67,15 +88,19 @@ class CartManager {
     let cartOutOfStock;
   
     await Promise.all(cart.products.map(async (prod) => {
-      if (prod.stock >= prod.pqty) {
+      if (prod.stock >= prod.pqty) 
+      {
         purchased.push(prod);
         amount = amount + prod.pqty * prod.price;
         await this.deleteProduct(cid, prod.pid.toString());
+
         const pm = new ProductManager();
         const data = await pm.getProductById({ pid: prod.pid.toString() });
         data.stock = data.stock - prod.pqty;
         await pm.updateProduct(data.id.toString(), data);
-      } else {
+      } 
+      else 
+      {
         const outOfStock = prod.pqty - prod.stock;
         prod.pqty = prod.stock;
         purchased.push(prod);

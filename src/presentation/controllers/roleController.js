@@ -3,24 +3,21 @@ import RoleManager from "../../domain/managers/roleManager.js";
 
 export const list = async (req, res, next) => {
     try {
-        const { limit, page } = req.query;
-
         const manager = new RoleManager();
-        const roles = await manager.paginate({ limit, page });
+        const roles = await manager.paginate(req.query);
 
         res.send({ status: 'success', roles: roles.docs, ...roles, docs: undefined });
     }
-    catch (e) {
+    catch (e) 
+    {
         next(e);
     }
 };
 
 export const getOne = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-    
+    try {   
         const manager = new RoleManager();
-        const role = await manager.getOne(id);
+        const role = await manager.getOne(req.params.id);
 
         res.send({ status: 'success', role });
     }
@@ -31,6 +28,7 @@ export const getOne = async (req, res, next) => {
 
 export const save = async (req, res, next) => {
     try {
+        console.log(req.body);
         const manager = new RoleManager();
         const role = await manager.create(req.body);
 
@@ -43,12 +41,10 @@ export const save = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
     try {
-        const { id } = req.params;
-
         const manager = new RoleManager();
-        const result = await manager.updateOne(id, req.body);
+        const role = await manager.updateOne(req.params.id, req.body);
 
-        res.send({ status: 'success', result, message: 'Role updated.' });
+        res.send({ status: 'success', role, message: 'Role updated.' });
     }
     catch (e) {
         next(e);
@@ -57,10 +53,8 @@ export const update = async (req, res, next) => {
 
 export const deleteOne = async (req, res, next) => {
     try {
-        const { id } = req.params;
-
         const manager = new RoleManager();
-        await manager.deleteOne(id);
+        await manager.deleteOne(req.params.id);
 
         res.send({ status: 'success', message: 'Role deleted.' });
     }

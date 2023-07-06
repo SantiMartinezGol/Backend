@@ -1,3 +1,4 @@
+import User from '../../../domain/entities/user.js'
 import userSchema from "../../models/mongoose/userSchema.js";
 
 class UserMongooseRepository
@@ -5,9 +6,10 @@ class UserMongooseRepository
   async paginate(criteria)
   {
     const { limit, page } = criteria;
-    const userDocuments = await userSchema.paginate({}, { limit, page });
+    const usersDocument = await userSchema.paginate({}, { limit, page });
+    const { docs, ...pagination } = usersDocument;
 
-    userDocuments.docs = userDocuments.docs.map(document => ({
+    const users = docs.map(document => new User({
       id: document._id,
       firstName: document.firstName,
       lastName: document.lastName,
@@ -18,37 +20,17 @@ class UserMongooseRepository
       cart: document.cart
     })); 
 
-    return userDocuments;
+    return {
+      users,
+      pagination
+    }
   }
 
   async getOne(id)
   {
     const userDocument = await userSchema.findOne({ _id: id });
-
-    if(!userDocument)
-    {
-      throw new Error('User dont exist.');
-    }
-
-    return {
-        id: userDocument?._id,
-        firstName: userDocument?.firstName,
-        lastName: userDocument?.lastName,
-        email: userDocument?.email,
-        age: userDocument?.age,
-        isAdmin: userDocument?.isAdmin,
-        role: userDocument?.role
-    }
-  }
-
-  async getOneByEmail(email) {
-
-    const userDocument = await userSchema.findOne({ email });
     
-    if(!userDocument){
-      throw new Error("User Not Found");
-    }
-    return {
+    return new User ({
         id: userDocument?._id,
         firstName: userDocument?.firstName,
         lastName: userDocument?.lastName,
@@ -57,42 +39,53 @@ class UserMongooseRepository
         password: userDocument?.password,
         isAdmin: userDocument?.isAdmin,
         role: userDocument?.role
+    })
+  }
 
-    }
+  async getOneByEmail(email) {
+    
+    const userDocument=await userSchema.findOne({ email });
+    
+    return new User ({
+      id: userDocument?._id,
+      firstName: userDocument?.firstName,
+      lastName: userDocument?.lastName,
+      email: userDocument?.email,
+      age: userDocument?.age,
+      password: userDocument?.password,
+      isAdmin: userDocument?.isAdmin,
+      role: userDocument?.role
+  })
   }
 
   async create(data)
   {
     const userDocument = await userSchema.create(data);
 
-    return {
-        id: userDocument._id,
-        firstName: userDocument.firstName,
-        lastName: userDocument.lastName,
-        email: userDocument.email,
-        age: userDocument.age,
-        isAdmin: userDocument.isAdmin
-    }
+    return new User ({
+      id: userDocument?._id,
+      firstName: userDocument?.firstName,
+      lastName: userDocument?.lastName,
+      email: userDocument?.email,
+      age: userDocument?.age,
+      isAdmin: userDocument?.isAdmin,
+      role: userDocument?.role
+  })
   }
 
   async updateOne(id, data)
    {
     const userDocument = await userSchema.findOneAndUpdate({ _id: id }, data, { new: true});
 
-    if(!userDocument)
-    {
-      throw new Error('User dont exist.');
-    }
-
-    return {
-        id: userDocument._id,
-        firstName: userDocument.firstName,
-        lastName: userDocument.lastName,
-        email: userDocument.email,
-        age: userDocument.age,
-        isAdmin: userDocument.isAdmin,
-   
-    }
+    return new User ({
+      id: userDocument?._id,
+      firstName: userDocument?.firstName,
+      lastName: userDocument?.lastName,
+      email: userDocument?.email,
+      age: userDocument?.age,
+      isAdmin: userDocument?.isAdmin,
+      role: userDocument?.role
+  })
   }
 
   async deleteOne(id)

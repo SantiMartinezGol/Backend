@@ -5,7 +5,7 @@ import { createContainer, asClass, Lifetime } from "awilix";
 
 import UserMongooseRepository from "./data/repositories/mongoose/userMongooseRepository.js";
 import RoleMongooseRepository from "./data/repositories/mongoose/roleMongooseRepository.js";
-import CartMongooseRepository from "./data/repositories/mongoose/cartMongooseRepository.js";
+import CartMongooseRepository from './data/repositories/mongoose/CartMongooseRepository.js';
 import ProductMongooseRepository from "./data/repositories/mongoose/productMongooseRepository.js";
 import TicketMongooseRepository from './data/repositories/mongoose/ticketMongooseRepository.js';
 

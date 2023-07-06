@@ -19,11 +19,9 @@ class AppExpress {
     this.app.set('views', __dirname + '/views');
     this.app.set('view engine', 'handlebars');
     this.app.use(express.static(__dirname + '/public'));
-
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-  
   }
 
   build() {
@@ -33,6 +31,16 @@ class AppExpress {
     this.app.use('/api/users', userRouter);
     this.app.use('/api/roles', roleRouter);
     this.app.use(errorHandler);
+  }
+  
+  callback()
+  {
+      return this.app;
+  }
+
+  close()
+  {
+      this.server.close();
   }
 
   listen() {

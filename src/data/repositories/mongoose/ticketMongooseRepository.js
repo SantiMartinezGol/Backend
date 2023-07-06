@@ -1,6 +1,6 @@
 import productSchema from '../../models/mongoose/productSchema.js'
 import ticketSchema from '../../models/mongoose/ticketSchema.js';
-
+import Ticket from '../../../domain/entities/ticket.js';
 class TicketMongooseRepository {
   
   async find(limit, page) {
@@ -28,13 +28,13 @@ class TicketMongooseRepository {
   async create(data) {
     const {code, purchase_datetime, amount, purchaser} = data
     const ticketDocument = await ticketSchema.create(data);
-    return {
+    return new Ticket ({
       id: ticketDocument._id,
       code: ticketDocument.code,
       purchase_datetime: ticketDocument.purchase_datetime,
       amount: ticketDocument.amount,
       purchaser:  ticketDocument.purchaser,
-    }
+    })
   }
 
   async updateOne(id, data) {

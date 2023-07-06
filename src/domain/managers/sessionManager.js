@@ -8,27 +8,26 @@ class SessionManager {
         this.userRepository = container.resolve("UserRepository") ;
     }
 
-    async login(data) {
-       
+    async login(data) {      
         const { email, password } = data;
         await loginValidation.parseAsync(data); 
-               
-        const user = await this.userRepository.getOneByEmail(email);
-      
-      /*  if(!user)
+
+        const user = await this.userRepository.getOneByEmail(email);     
+        if(!user)
         {
             throw new Error ("User Not Found")
-        } */
-        
+        } 
+
         const isHashedPassword = await isValidPassword(password, user.password);
-   
         if (!isHashedPassword) {
             throw new Error('Login failed, invalid password.');
         };
-
         const dto = { ...user, password: undefined }
         const accessToken = await generateToken(dto);
-        
+
+        if (!accessToken) {
+            throw new Error('Login failed, invalid session.')
+        }
         return accessToken;
     }
 
@@ -39,6 +38,11 @@ class SessionManager {
             password: await createHash(data.password, 10)
         }
         const user = await manager.create(dto);
+        if (!user) 
+        {
+            throw new Error('Login failed, invalid session.')
+        }
+
         return user
     };
 

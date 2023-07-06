@@ -3,8 +3,10 @@ class Cart
   constructor(props)
   {
     this.id = props.id;
-    this.products.id =  props.product.id;
-    this.product.pqty = props.product.pqty
+    this.products = props.products.map(p=> ({
+      id: p.id,
+      pqty: p.pqty
+    }))
   }
 }
 

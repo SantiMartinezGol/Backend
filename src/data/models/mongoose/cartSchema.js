@@ -5,7 +5,7 @@ const cartCollection = 'carts';
 const cartSchema = new mongoose.Schema({
   products: {
     type: [{
-      _id: { type: Schema.Types.ObjectId, index: true, ref: 'products', required: true },
+      product: { type: Schema.Types.ObjectId, index: true, ref: 'products', required: true },
       pqty: { type: Schema.Types.Number, required: true }
     }],
   }
@@ -15,3 +15,4 @@ cartSchema.pre('findOne', function () {
 });
 
 export default mongoose.model(cartCollection, cartSchema);
+

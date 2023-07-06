@@ -1,5 +1,6 @@
 import container from "../../container.js"
 import idValidation from "../validations/shared/idValidation.js";
+import paginateValidation from "../validations/shared/paginateValidation.js";
 
 class RoleManager {
     constructor() {
@@ -8,12 +9,28 @@ class RoleManager {
     }
 
     async paginate(criteria) {
-        return this.roleRepository.paginate(criteria);
+        var { limit, page } = criteria;
+        limit = parseInt(limit);
+        page = parseInt(page);     
+        const data = { limit, page};
+        await paginateValidation.parseAsync(data);
+
+        const rolesDocument= this.roleRepository.paginate(criteria);
+        if (!rolesDocument) 
+        {
+            throw new Error('Roles Not Found!')
+        }
+        return rolesDocument
     }
 
     async getOne(id) {
         await idValidation.parseAsync({id: id});
-        return this.roleRepository.getOne(id);
+        const roleDocument = this.roleRepository.getOne(id);
+        if (!roleDocument) 
+        {
+            throw new Error('Role Not Found!')
+        }
+        return roleDocument
     }
 
     async create(data) {
@@ -22,11 +39,13 @@ class RoleManager {
 
     async updateOne(id, data) {
         await idValidation.parseAsync({id: id});
+
         return this.roleRepository.updateOne(id, data);
     }
 
     async deleteOne(id) {
         await idValidation.parseAsync({id: id});
+
         return this.roleRepository.deleteOne(id);
     }
 }

@@ -1,4 +1,3 @@
-//import UserMongooseRepository from "../../data/repositories/userMongooseRepository.js"
 import idValidation from "../../domain/validations/shared/idValidation.js"
 import paginateValidation from "../validations/shared/paginateValidation.js"
 import userCreateValidation from "../../domain/validations/user/userCreateValidation.js"
@@ -9,32 +8,40 @@ import container from "../../container.js"
 class UserManager {
     constructor() {
         this.userRepository = container.resolve("UserRepository") ;
-        //this.userRepository = new UserMongooseRepository();
     }
 
     async paginate(data) {
         var { limit, page } = data;
-        limit = parseInt(limit)
-        page = parseInt(page)
-        data = {limit,page}
-
+        limit = parseInt(limit);
+        page = parseInt(page);
+        data = {limit,page};
         await paginateValidation.parseAsync(data);
+
         return this.userRepository.paginate(data);
     }
 
     async getOneByEmail(email) {
         await loginValidation.parseAsync(email);
-        return this.userRepository.getOneByEmail(email);
+        const userDocument = await this.userRepository.getOneByEmail(email);
+        if(!userDocument){
+            throw new Error("User Not Found");
+        }
+        return userDocument
     }
 
     async getOne(data) { 
+
         await idValidation.parseAsync(data);
-        const {id} = data
-        return this.userRepository.getOne(id);
+        const {id} = data;
+        const userDocument = await this.userRepository.getOne(id);
+        if(!userDocument)
+        {
+          throw new Error('User dont exist.');
+        }
+        return userDocument
     }
 
     async create(data) {
-        console.log(data);
         await userCreateValidation.parseAsync(data);
         const user = await this.userRepository.create(data);
         if(!user){
@@ -44,11 +51,16 @@ class UserManager {
     }
 
     async updateOne(id, data) {
-        await userUpdateValidation.parseAsync({...data, id});
-        return this.userRepository.updateOne(id, data);
+        const userDocument = await this.userRepository.updateOne(id, data);
+        if(!userDocument)
+        {
+        throw new Error('User dont exist.');
+        }
+
+        return userDocument;
     }
 
-    async deleteOne(data) {
+    async deleteOne(data) { 
         await idValidation.parseAsync(data)
         const { id } = data;
          return this.userRepository.deleteOne(id);

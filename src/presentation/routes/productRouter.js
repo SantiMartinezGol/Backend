@@ -7,8 +7,8 @@ const productRouter = Router();
 
 productRouter.get('/', list);
 productRouter.get('/:pid', getOne );
-productRouter.post('/', auth, authorization("manageProduct"), save );
-productRouter.put('/:pid', auth, authorization("manageProduct"), update );
-productRouter.delete('/:pid', auth, authorization("manageProduct"),deleteOne);
+productRouter.post('/', /*auth, authorization("manageProduct"),*/ save );
+productRouter.put('/:pid', /*auth, authorization("manageProduct"),*/ update );
+productRouter.delete('/:pid', /*auth, authorization("manageProduct"),*/ deleteOne);
 
 export default productRouter;

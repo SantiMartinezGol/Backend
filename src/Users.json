@@ -10,9 +10,9 @@
   },
   {
     "id": "647ed77604802513324cf2f8",
-    "firstName": "Jorge",
+    "firstName": "Marcela",
     "lastName": "Lopez",
-    "email": "jorgelopez12mail.com",
+    "email": "marcelalopez12@gmail.com",
     "age": 60,
     "isAdmin": false,
     "password": "hola123"
@@ -26,14 +26,14 @@
     "isAdmin": false,
     "password": "$2b$10$0vz9mENr18IdvgkhvvOeDun39P0pL1m63xqT7Wtza5qfOUDZKJDk.",
     "role": {
-      "_id": "649d27f5b67f5afe49c29ee5",
+      "id": "649d27f5b67f5afe49c29ee5",
       "name": "Client",
       "permissions": [
         "manageCart"
       ],
       "__v": 0
     },
-    "cart": "649d3db183da9883fe4fa00c"
+    "cart": "mp207izrzrswt76ytl8zj5jc"
   },
   {
     "id": "647f89ab978170a1c476fc5d",
@@ -44,7 +44,7 @@
     "isAdmin": false,
     "password": "$2b$10$WrV3trCvxTqS22b.iXGXU.X8pmRdKqPfy8o6Qfisi5YXI3sPqa7wC",
     "role": {
-      "_id": "647e5fa5514d6131bff4a325",
+      "id": "647e5fa5514d6131bff4a325",
       "name": "Client",
       "permissions": [
         "saveRole",
@@ -58,21 +58,83 @@
     }
   },
   {
-    "id": "649a77e21fc2900ff4117de6",
-    "firstName": "Jorgito",
-    "lastName": "Perecito",
-    "email": "abcd1234@gmail.com",
-    "age": 28,
-    "isAdmin": false,
-    "password": "12345678"
-  },
-  {
     "id": "649d2746e500d5694f9a58c5",
     "firstName": "Santiago",
     "lastName": "Martinez",
     "email": "santimartinez0580@gmail.com",
     "age": 24,
-    "isAdmin": true,
-    "password": "$2b$10$OuYgEZ390LwmsCH6w0OD6eoKksp1.VHuurXL8qOJ7s8K/KbvII746"
+    "isAdmin": true
+  },
+  {
+    "id": "nhkirsnjix3nawe1ncb15j0u",
+    "firstName": "Jose",
+    "lastName": "Quevedo",
+    "email": "josequevedo8763@gmail.com",
+    "age": 35,
+    "password": "$2b$10$naazDyTgasrhVVoY3GpGReCP.18r3Q8s9FhgDKx9NNsyJof2Bixzi",
+    "isAdmin": false
+  },
+  {
+    "id": "owqeq15u9ry1bj3umx6fial4",
+    "firstName": "Pedro",
+    "lastName": "Quevedo",
+    "email": "pedroquevedo5517@gmail.com",
+    "age": 28,
+    "password": "$2b$10$aHoe0DPDruLH8QlDK9UHbu/FAZbujGnvm7s0Jy3zek0MOHXMzBjci",
+    "isAdmin": false
+  },
+  {
+    "id": "y2kktxipwapicvlxsa06bea3",
+    "firstName": "Juan",
+    "lastName": "Perez",
+    "email": "juanperez7401@gmail.com",
+    "age": 48,
+    "password": "$2b$10$mun2qDHjcRnN2qGpEAs6K.rMXdZuNe9sLAyrudGQDex3qimCho92K",
+    "isAdmin": false
+  },
+  {
+    "id": "wxy9p7909p6uxij6qzjdqa28",
+    "firstName": "Jose",
+    "lastName": "Perez",
+    "email": "joseperez2994@gmail.com",
+    "age": 37,
+    "password": "$2b$10$on6uu4Yzdm69qXX8gsTCR.uY1yt2/l3LLGn3fFsjEL7UPiEzi/0au",
+    "isAdmin": false
+  },
+  {
+    "id": "zmsbpvjli2472rhzfs03ifkg",
+    "firstName": "Maria",
+    "lastName": "Saavedra",
+    "email": "mariasaavedra5042@gmail.com",
+    "age": 76,
+    "password": "$2b$10$AzXELoJXtr.PHuZF5hJ.Ru...3wB50.hGNQrUKJoguGOuaUwI8.3y",
+    "isAdmin": false
+  },
+  {
+    "id": "jd0c9mt6djuzmn48ycqjbb3g",
+    "firstName": "Juan",
+    "lastName": "Saavedra",
+    "email": "juansaavedra4181@gmail.com",
+    "age": 66,
+    "password": "$2b$10$56oAISwPzEBjrxn9DFcdkeCmx0ALpkOOEQgqwkM38YEYdGMdIG4ka",
+    "isAdmin": false
+  },
+  {
+    "id": "6th8dtwajljk1qh6ust87igq",
+    "firstName": "Juan",
+    "lastName": "Saavedra",
+    "email": "juansaavedra1679@gmail.com",
+    "age": 82,
+    "password": "$2b$10$zHG.Lg716Zi2PqtuPSKOMOYqBghq65LQM63MzccthicxkCBIk7ofy",
+    "isAdmin": false
+  },
+  {
+    "id": "dthd3p8j6s1vd6iqob9ltich",
+    "firstName": "Marcela",
+    "lastName": "Garcia",
+    "email": "marcelalopez12@gmail.com",
+    "age": 46,
+    "password": "$2b$10$05oCfu2QH0PtMPEP6HhSneMWpJq4uqTK5mIbtUd9zOFDNtQ40epem",
+    "isAdmin": false
   }
 ]

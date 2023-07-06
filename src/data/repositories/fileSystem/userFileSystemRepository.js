@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { generateUniqueKey } from '../../../shared/index.js';
+import User from '../../../domain/entities/user.js';
 
 class UserFileSystemRepository {
     #users = []
@@ -11,36 +12,40 @@ class UserFileSystemRepository {
     }
 
     async paginate(criteria) {
-     
-        const {limit, page}  = criteria  
-        
         let usersFile = await fs.promises.readFile(this.path, 'utf-8')
-        let users = JSON.parse(usersFile);
+        const usersDocument = JSON.parse(usersFile);
 
+        const {limit, page}  = criteria
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
-        const paginatedUsers = users.slice(startIndex, endIndex);
+        const paginatedUsers = usersDocument.slice(startIndex, endIndex);
 
-        return {
-            docs: paginatedUsers.map(user => ({
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                age: user.age,
-                isAdmin: user.isAdmin,
-                role: user.role,
-                cart: user.cart
-            })),
-            totalDocs: users.length,
+        const users = paginatedUsers.map(document => new User({
+            id: document.id,      
+            firstName: document.firstName,
+            lastName: document.lastName,
+            email: document.email,
+            age: document.age,
+            isAdmin: document.isAdmin,
+            role: document.role,
+            cart: document.cart
+        }));
+
+        const pagination={
+            totalDocs: usersDocument.length,
             limit: limit,
-            totalPages: Math.ceil(users.length / limit),
+            totalPages: Math.ceil(usersDocument.length / limit),
             page: page,
             pagingCounter: (page - 1) * limit + 1,
             hasPrevPage: page > 1,
-            hasNextPage: page < Math.ceil(users.length / limit),
+            hasNextPage: page < Math.ceil(usersDocument.length / limit),
             prevPage: page > 1 ? page - 1 : null,
-            nextPage: page < Math.ceil(users.length / limit) ? page + 1 : null
+            nextPage: page < Math.ceil(usersDocument.length / limit) ? page + 1 : null
+        }
+   
+        return {
+            users,
+            pagination
         };
     }
 
@@ -50,52 +55,46 @@ class UserFileSystemRepository {
         const usersFile = await fs.promises.readFile(this.path, 'utf-8')         
         let users = JSON.parse(usersFile)
         let user = users.find((u) => u.id === id);
-        if (!user) {
-        throw new Error('User Not Found!');
-        }
-        return {
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            age: user.age,
-            isAdmin: user.isAdmin,
-            role: user.role,
-            cart: user.cart
-        }
+        
+        return new User ({
+            id: user?._id,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            email: user?.email,
+            age: user?.age,
+            isAdmin: user?.isAdmin,
+            role: user?.role
+        });
     }
-
 
     async getOneByEmail(email) {
-    const usersFile = await fs.promises.readFile(this.path, 'utf-8')
-    let users = JSON.parse(usersFile)
+        console.log(email);
 
-    let user = users.find((u) => u.email === email);
-    if (!user) {
-        throw new Error('User Not Found!');
+        const usersFile = await fs.promises.readFile(this.path, 'utf-8')
+        let users = JSON.parse(usersFile)
+        let user = users.find((u) => u.email === email);
+        
+        return new User ({
+            id: user?.id,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            email: user?.email,
+            age: user?.age,
+            isAdmin: user?.isAdmin,
+            password: user?.password,
+            role: user?.role
+        })
     }
-    return {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        age: user.age,
-        isAdmin: user.isAdmin,
-        role: user.role,
-        cart: user.cart
-    }
-}
 
     async create(data) {
-
         const { firstName, lastName, email, age, password, isAdmin, role } = data;
         const usersFile = await fs.promises.readFile(this.path, 'utf-8')
-    
         let users = JSON.parse(usersFile)
+        
         const size= 24
         const id = generateUniqueKey(size);
-        const valid = users.find((u) => u.id === id);
 
+        const valid = users.find((u) => u.id === id);
         if (valid) 
         {
             throw new Error ('Invalid Id')
@@ -115,52 +114,52 @@ class UserFileSystemRepository {
     })
     await fs.promises.writeFile(this.path, JSON.stringify(users, null, 2))
 
-    return {
-        id: data.id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        age: data.age,
-        isAdmin: data.isAdmin,
-        role: data.role
-    }
+    return new User ({
+        id: id,
+        firstName: data?.firstName,
+        lastName: data?.lastName,
+        email: data?.email,
+        age: data?.age,
+        isAdmin: data?.isAdmin,
+        role: data?.role
+    })
 }
 
     async updateOne(id, data) {
 
-    let usersFile = await fs.promises.readFile(this.path, 'utf-8')
-    let users = JSON.parse(usersFile);
-    let idUser = users.findIndex((u) => u.id === id);
-    if (!idUser) {
-        throw new Error('User Not Found!');
-    }
-    users.splice(idUser, 1, { id: id, ...data });
-    await fs.promises.writeFile(this.path, JSON.stringify(users, null, 2))
-
-    return {
-        id: id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        age: data.age,
-        isAdmin: data.isAdmin,
-        role: data.role
-    }
-
-}
+        let usersFile = await fs.promises.readFile(this.path, 'utf-8');
+        let users = JSON.parse(usersFile);
+        let userIndex = users.findIndex((u) => u.id === id);
+        if (userIndex === -1) {
+            throw new Error('User Not Found!');
+        }
+        users[userIndex] = new User({ ...users[userIndex], ...data });
+        await fs.promises.writeFile(this.path, JSON.stringify(users, null, 2));
+        
+        return new User ({
+            id: users[userIndex].id,
+            firstName: users[userIndex]?.firstName,
+            lastName: users[userIndex]?.lastName,
+            email: users[userIndex]?.email,
+            age: users[userIndex]?.age,
+            isAdmin: users[userIndex]?.isAdmin,
+            role: users[userIndex]?.role
+        })
+        
+            }
 
     async deleteOne(id) {
-    let usersFile = await fs.promises.readFile(this.path, 'utf-8')
-    let users = JSON.parse(usersFile);
+        let usersFile = await fs.promises.readFile(this.path, 'utf-8')
+        let users = JSON.parse(usersFile);
 
-    const idUser = users.find((u) => u.id === id);
-    if (!idUser) {
-        throw new Error('User Not Found!');
+        const idUser = users.find((u) => u.id === id);
+        if (!idUser) {
+            throw new Error('User Not Found!');
+        }
+        let userDelete = users.filter((u) => u.id !== id);
+        await fs.promises.writeFile(this.path, JSON.stringify(userDelete, null, 2))
+        return
     }
-    let userDelete = users.filter((u) => u.id !== id);
-    await fs.promises.writeFile(this.path, JSON.stringify(userDelete, null, 2))
-    return
-}
 }
 
 export default UserFileSystemRepository;
