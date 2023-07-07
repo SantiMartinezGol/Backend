@@ -51,7 +51,7 @@ describe("Testing User Mongoose Repository", () => {
             email: faker.internet.email(),
             age: 18,
             isAdmin: false,
-            password: 12345678
+            password: "hola123"
         };
 
         return this.userRepository
@@ -103,7 +103,7 @@ describe("Testing User Mongoose Repository", () => {
             email: faker.internet.email(),
             age: 26,
             isAdmin: false,
-            password: 12345678
+            password: "hola123"
         };
 
         return this.userRepository

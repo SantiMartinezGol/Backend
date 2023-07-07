@@ -17,10 +17,10 @@ describe("Testing Auth Endpoints Success", () => {
     });
     after(function () {
         this.db.drop();
-        /* this.db.close();
-        this.requester.app.close(() => {
+       /*   this.db.close();
+       this.requester.app.close(() => {
           console.log('Conexión cerrada');
-        }); */
+        });  */
     });
     beforeEach(async function () {
         this.timeout(2000);
@@ -34,7 +34,8 @@ describe("Testing Auth Endpoints Success", () => {
             lastName: `${faker.person.lastName()} ${faker.person.lastName()} `,
             email: faker.internet.email(),
             age: 20,
-            password: "12345678"
+            isAdmin: true,
+            password: "hola123"
         };
 
         return this.requester
@@ -91,7 +92,9 @@ describe("Testing Auth Endpoints Success", () => {
             }
         );
     });
+   
 });
+export {jwt}
 
 // describe("Testing Auth Endpoints Fails", () => {
 //     before(async function () {

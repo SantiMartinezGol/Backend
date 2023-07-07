@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import chai from "chai";
 import supertest from "supertest";
 import initServer from "./index.js";
-import { string } from 'zod';
+import { jwt } from './auth.test.js';
 
 const expect = chai.expect;
 let id = ""
@@ -32,6 +32,7 @@ describe("Testing user Endpoints Success", () => {
     {
         return this.requester
             .get('/api/users/')
+            .set('Authorization', `Bearer ${jwt}`)
             .query({ limit: 5, page: 1 })
             .then(result =>
             {
@@ -55,6 +56,7 @@ describe("Testing user Endpoints Success", () => {
         };
         return this.requester
             .post('/api/users')
+            .set('Authorization', `Bearer ${jwt}`)
             .send(this.payload)
             .then(result =>
             {
@@ -72,6 +74,7 @@ describe("Testing user Endpoints Success", () => {
     {
         return this.requester
             .get('/api/users/'+`${id}`)
+            .set('Authorization', `Bearer ${jwt}`)
             .then(result =>
             {
                 const { _body, status } = result;
@@ -96,6 +99,7 @@ describe("Testing user Endpoints Success", () => {
 
         return this.requester
             .put('/api/users/'+`${id}`)
+            .set('Authorization', `Bearer ${jwt}`)
             .send(this.payload)
             .then(result =>
             {

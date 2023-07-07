@@ -2,11 +2,10 @@ import { faker } from '@faker-js/faker';
 import chai from "chai";
 import supertest from "supertest";
 import initServer from "./index.js";
-import { string } from 'zod';
+import { jwt } from './auth.test.js';
 
 const expect = chai.expect;
 let id = ""
-let jwt = "";
 
 describe("Testing Product Endpoints Success", () => {
     before(async function () {
@@ -58,10 +57,10 @@ describe("Testing Product Endpoints Success", () => {
 
         return this.requester
             .post('/api/products')
+            .set('Authorization', `Bearer ${jwt}`)
             .send(this.payload)
             .then(result =>
             {
-               // console.log(result.request.response);
                 const { _body, status } = result.request.response;
 
                 expect(status).to.be.equals(201);
@@ -83,8 +82,6 @@ describe("Testing Product Endpoints Success", () => {
                 expect(status).to.be.equals(200);
                 expect(typeof _body.product.title).to.be.equals('string');
                 expect(_body.status).to.be.equals("success");
-
-                jwt = _body.accessToken;
             }
         );
     });
@@ -102,6 +99,7 @@ describe("Testing Product Endpoints Success", () => {
 
         return this.requester
             .put('/api/products/'+`${id}`)
+            .set('Authorization', `Bearer ${jwt}`)
             .send(this.payload)
             .then(result =>
             {
