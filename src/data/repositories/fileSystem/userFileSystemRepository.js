@@ -68,7 +68,6 @@ class UserFileSystemRepository {
     }
 
     async getOneByEmail(email) {
-        console.log(email);
 
         const usersFile = await fs.promises.readFile(this.path, 'utf-8')
         let users = JSON.parse(usersFile)

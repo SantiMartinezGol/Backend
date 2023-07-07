@@ -28,7 +28,6 @@ export const getOne = async (req, res, next) => {
 
 export const save = async (req, res, next) => {
     try {
-        console.log(req.body);
         const manager = new RoleManager();
         const role = await manager.create(req.body);
 

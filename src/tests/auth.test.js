@@ -35,7 +35,8 @@ describe("Testing Auth Endpoints Success", () => {
             email: faker.internet.email(),
             age: 20,
             isAdmin: true,
-            password: "hola123"
+            password: "hola123",
+            role: '647eeca83867c5161f866c7b'
         };
 
         return this.requester
@@ -43,6 +44,7 @@ describe("Testing Auth Endpoints Success", () => {
             .send(this.payload)
             .then(result =>
             {
+                
                 const { _body, status } = result;
 
                 expect(status).to.be.equals(201);
